@@ -1,0 +1,42 @@
+﻿@model WebModelServices.UserModel.contracts.DTO.UserViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm("Edit", "User"))
+        {
+
+            @Html.LabelFor(model => model.FirstName)
+            @Html.TextBoxFor(model => model.FirstName)
+            @Html.ValidationMessageFor(model => model.FirstName);
+            <br />
+            @Html.LabelFor(model => model.LastName)
+            @Html.TextBoxFor(model => model.LastName)
+            <br />
+            @Html.LabelFor(model => model.Email)
+            @Html.TextBoxFor(model => model.Email)
+            <br />
+            @Html.LabelFor(model => model.Phone)
+            @Html.TextBoxFor(model => model.Phone)
+            <br />
+            @Html.LabelFor(model => model.BirthDate)
+            @Html.TextBoxFor(model => model.BirthDate)
+
+            @Html.HiddenFor(model => model.UserId)
+
+            <input type="submit"  name="Save User" />
+            
+
+        }
+    </div>
+</body>
+</html>

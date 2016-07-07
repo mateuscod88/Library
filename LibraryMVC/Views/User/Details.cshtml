@@ -1,0 +1,179 @@
+﻿@model WebModelServices.UserModel.Contracts.ViewModel.DetailsViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>DetailsViewModel</h4>
+        <hr />
+        <dl class="dl-horizontal">
+        </dl>
+            @using (Html.BeginForm("Details", "User"))
+        {
+
+            @Html.LabelFor(model => model.User.FirstName)
+            @Html.DisplayTextFor(model => model.User.FirstName)
+            <br />
+            @Html.LabelFor(model => model.User.LastName)
+            @Html.DisplayTextFor(model => model.User.LastName)
+            <br />
+            @Html.LabelFor(model => model.User.Email)
+            @Html.DisplayTextFor(model => model.User.Email)
+            <br />
+            @Html.LabelFor(model => model.User.Phone)
+            @Html.DisplayTextFor(model => model.User.Phone)
+            <br />
+            @Html.LabelFor(model => model.User.BirthDate)
+            @Html.DisplayTextFor(model => model.User.BirthDate)
+            <br />
+            <br/>
+            @Html.Raw("Books List")
+            <br />
+            @Html.Raw("-----------------------------------")
+
+            <br/>
+                foreach (var book in Model.Book)
+                {
+                    if (book.IsReturned == false)
+                    {
+                    <dl >
+                        <dt>
+                            @Html.LabelFor(model => book.Title)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => book.Title)
+                        </dd>
+                            
+                        <dt>
+                            @Html.LabelFor(model => book.Author)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => book.Author)
+                        </dd>
+                    </dl>
+                    }
+                }
+
+            @Html.Raw("Borrows List ")
+            <br />
+            @Html.Raw("-------------not returned books---------------------")
+            <br />
+                foreach (var borrows in Model.Borrows)
+                {
+                    if (borrows.IsReturned == false)
+                    {
+                    <dl>
+                        @Html.Raw("----------------------------------")
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.BookAuthor)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.BookAuthor)
+                        </dd>
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.BookTitle)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.BookTitle)
+                        </dd>
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.FromDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.FromDate)
+                        </dd>
+
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.FromDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.FromDate)
+                        </dd>
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.ToDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.ToDate)
+                        </dd>
+                        <br />
+                        @Html.Raw("----------------------------------")
+                        <br />
+                    </dl>
+                    }
+                }
+                @Html.Raw("------------- returned books---------------------")
+                <br />
+                foreach (var borrows in Model.Borrows)
+                {
+                    if (borrows.IsReturned == true)
+                    {
+                        @Html.Raw("----------------------------------")
+                        <br />
+                    <dl>
+
+                        <dt>
+                            @Html.LabelFor(model => borrows.BookAuthor)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.BookAuthor)
+                        </dd>
+                        
+                        <dt>
+                            @Html.LabelFor(model => borrows.BookTitle)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.BookTitle)
+                        </dd>
+                    
+                        <dt>
+                            @Html.LabelFor(model => borrows.FromDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.FromDate)
+                        </dd>
+
+                        <br />
+                        <dt>
+                            @Html.LabelFor(model => borrows.FromDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.FromDate)
+                        </dd>
+                    
+                        <dt>
+                            @Html.LabelFor(model => borrows.ToDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayTextFor(model => borrows.ToDate)
+                        </dd>
+                        
+                    </dl>
+                    
+                    @Html.Raw("----------------------------------")
+                        <br />
+                    }
+                }
+            }
+
+
+
+    </div>
+    <p>
+        @Html.ActionLink("Back to List", "Index","User")
+    </p>
+</body>
+</html>

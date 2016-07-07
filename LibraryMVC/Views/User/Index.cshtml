@@ -1,0 +1,56 @@
+﻿
+@model LibraryMVC.Models.UserListViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table style="width:100%" border="1">
+        <tr>
+            <td>UserName</td>
+            <td>BirthDate</td>
+            <td>Email</td>
+            <td>Phone</td>
+            <td>Add Data</td>
+            <td>Modified</td>
+            <td>Books Borrowed</td>
+            <td>Active</td>
+            <td> </td>
+        </tr>
+        @foreach (var item in Model.User)
+        {
+           
+            <tr>
+            <td>@item.FirstName + @item.LastName</td>
+            <td>@item.BirthDate</td>
+            <td>@item.Email</td>
+            <td>@item.Phone</td>
+            <td>@item.AddDate</td>
+            <td>@item.Modified</td>
+            <td>@item.BooksBorrowed</td>
+            <td>@((item.isActive) ? "Yes" : "No")</td>
+            <td>@Html.ActionLink("Edit", "Edit", new { UserId = item.UserId}),
+                @Html.ActionLink("Details", "Details", new { UserId = item.UserId}),
+                @if (item.isActive && item.BooksBorrowed < 1)
+                {
+                    @Html.ActionLink("Delete", "Delete", new { UserId = item.UserId})
+                }</td>
+            </tr>
+
+            
+        }
+    </table>
+    <div> 
+      <a href="/User/Add">Add New</a>
+    </div>
+   
+</body>
+</html>

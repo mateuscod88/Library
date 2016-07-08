@@ -20,10 +20,10 @@ namespace LibraryMVC.Controllers
         }
         public ActionResult Index()
         {
-            UserListViewModel userListViewModel = new UserListViewModel(); 
-            IList<UserViewModel> usersViewModel = _userService.RetrieveAll();
-            userListViewModel.User = usersViewModel;
-            return View("Index",userListViewModel);
+            UserListViewModel usersListViewModel = new UserListViewModel(); 
+            IList<UserViewModel> userViewModel = _userService.RetrieveAll();
+            usersListViewModel.User = userViewModel;
+            return View("Index",usersListViewModel);
         }
         
         [HttpPost]
@@ -57,7 +57,6 @@ namespace LibraryMVC.Controllers
         [HttpPost]
         public ActionResult Edit(UserViewModel user)
         {
-            var name = user.FirstName;
             _userService.SaveUserViewModel(user);
 
             return RedirectToAction("Index");

@@ -10,6 +10,7 @@ namespace EF
         public BookLibraryEF()
             : base("name=BookLibraryEF")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<Book> Book { get; set; }

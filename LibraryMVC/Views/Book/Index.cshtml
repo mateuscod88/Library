@@ -30,6 +30,55 @@
             .PageSize(20)
         )
 )
+<button type="button" class="myButton" onclick="showDetails()">Add</button>
+<p id="myPar"> button on </p>
+
+@(Html.Kendo().Window().Name("Details")
+    .Title("AddBook")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(300)
+    .LoadContentFrom("AddBook","Book")
+)
+
+<script type="text/x-kendo-template" id="template">
+    <div id="d">
+        <p>Add WIndow</p>
+        <p>Add WIndow</p>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var detailsTemplate = kendo.template($("#template").html());
+
+    function showDetails() {
+        var wnd = $("#Details").data("kendoWindow");
+        $("#myPar").hide();
+        //wnd.content();
+        console.log(wnd.content());
+        wnd.center().open();
+    }
+</script>
+
+<style type="text/css">
+    #details-container {
+        padding: 10px;
+    }
+
+        #details-container h2 {
+            margin: 0;
+        }
+
+        #details-container em {
+            color: #8c8c8c;
+        }
+
+        #details-container dt {
+            margin: 0;
+            display: inline;
+        }
+</style>
 
 <style>
     .customer-photo {

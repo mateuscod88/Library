@@ -1,6 +1,8 @@
 ﻿using EF;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace WebModelServices.BookModel
         {
             using (var context = new BookLibraryEF())
             {
-                var books = (from book in context.Book
+                var books = (from book in context.Books
                             select new BookViewModel
                             {
                                 BookId = book.BookId,
@@ -32,19 +34,21 @@ namespace WebModelServices.BookModel
         }
         public void AddNewBook(AddBookViewModel bookViewModel)
         {
+            Book book = new Book();
+
+                book.Author = bookViewModel.Author;
+                book.Title = bookViewModel.Title;
+                book.AddDate = System.DateTime.Now;
+                book.Count = bookViewModel.Count;
+                book.ModifiedDate = System.DateTime.Now;
+                book.ISBN = bookViewModel.ISBN;
+                book.ReleaseDate = bookViewModel.ReleaseDate;
+                book.BookGenreId = 2;
+
             using (var context = new BookLibraryEF())
             {
-                Book book = new Book
-                {
-                    Author = bookViewModel.Author,
-                    Title = bookViewModel.Title,
-                    AddDate = System.DateTime.Now,
-                    Count = bookViewModel.Count,
-                    ModifiedDate = System.DateTime.Now,
-                    ISBN = bookViewModel.ISBN,
-                    ReleaseDate = bookViewModel.ReleaseDate,
-                };
-                context.Book.Add(book); 
+                context.Books.Add(book);
+                context.SaveChanges();
             }
         }
 
@@ -52,7 +56,7 @@ namespace WebModelServices.BookModel
         {
             using (var context = new BookLibraryEF())
             {
-                var selectedBook = context.Book.SingleOrDefault(m => (m.BookId == bookId));
+                var selectedBook = context.Books.SingleOrDefault(m => (m.BookId == bookId));
                 BookViewModel bookViewModel = new BookViewModel
                 {
                     Author = selectedBook.Author,
@@ -71,7 +75,7 @@ namespace WebModelServices.BookModel
         {
             using (var context = new BookLibraryEF())
             {
-                var selectedBook = context.Book.SingleOrDefault(m => (m.BookId == bookViewModel.BookId));
+                var selectedBook = context.Books.SingleOrDefault(m => (m.BookId == bookViewModel.BookId));
                 selectedBook.Author = bookViewModel.Author;
                 selectedBook.Count = bookViewModel.Count;
                 selectedBook.Title = bookViewModel.Title;

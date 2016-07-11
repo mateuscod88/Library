@@ -13,7 +13,7 @@ namespace EF
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public virtual DbSet<Book> Book { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Borrow> Borrow { get; set; }
         public virtual DbSet<DictBookGenre> DictBookGenre { get; set; }
         public virtual DbSet<User> User { get; set; }

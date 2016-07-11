@@ -28,7 +28,26 @@ namespace LibraryMVC.Controllers
             return Json(_bookService.RetriveAll().ToDataSourceResult(request));
         }
 
-        
+        public ActionResult AddBook()
+        {
+            
+            return PartialView("AddBook");
+        }
+        [HttpPost]
+        public ActionResult AddBook(AddBookViewModel addBookViewModel)
+        {
+            if (ModelState.IsValid )
+            {
+                AddBookViewModel newAddBookVM = new AddBookViewModel();
+                
+                _bookService.AddNewBook(addBookViewModel);
+                return Json(new { isDone = true });
+            }
+            else
+            {
+                return PartialView("AddBook", addBookViewModel);
+            }
+        }
 
     }
 }

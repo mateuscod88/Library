@@ -56,8 +56,10 @@ namespace WebModelServices.UserModel.contracts.DTO
             newUser.IsActive = true;
             newUser.Phone = user.Phone;
             newUser.ModifiedDate = System.DateTime.Now;
+            
             using (var context = new BookLibraryEF())
             {
+                int id = newUser.UserId;
                 context.User.Add(newUser);
                 context.SaveChanges();
             }

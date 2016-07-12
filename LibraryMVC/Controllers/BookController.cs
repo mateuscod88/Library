@@ -48,6 +48,39 @@ namespace LibraryMVC.Controllers
                 return PartialView("AddBook", addBookViewModel);
             }
         }
+        public ActionResult EditBook(int id)
+        {
+            EditBookViewModel selectedEditView = _bookService.GetEditBookById(id);
+            return PartialView("EditBook",selectedEditView);
+        }
+        //public ActionResult EditBook()
+        //{
+        //    return View("404");
+        //}
+        [HttpPost]
+        public ActionResult EditBook(EditBookViewModel editBookViewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _bookService.SaveEditedBook(editBookViewModel);
+                return Json(new { isDone = true });
+            }
+            else
+            {
+                return PartialView("AddBook", editBookViewModel);
+            }
+
+        }
+        [HttpGet]
+        public ActionResult BookDetails(int id)
+        {
+            
+            return PartialView(_bookService.GetBookDetailsById(id));
+        }
+
 
     }
-}
+        
+
+    }

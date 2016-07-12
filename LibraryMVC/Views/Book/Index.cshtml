@@ -13,8 +13,11 @@
             columns.Bound(c => c.Title);
             columns.Bound(c => c.ISBN);
             columns.Bound(c => c.ReleaseDate).Width(150);
-            
-
+            columns.Bound(c => c.BookGenre).Width(150);
+            columns.Command(command => command.Custom("Edit").Click("showEditView")).Width(150);
+            columns.Command(command => command.Custom("Details").Click("showDetailsView")).Width(150);
+           
+        
         })
         .HtmlAttributes(new { style = "height: 550px;" })
         .Scrollable()
@@ -30,18 +33,33 @@
             .PageSize(20)
         )
 )
-<button type="button" class="myButton" onclick="showDetails()">Add</button>
+<button type="button" class="myButton" onclick="showAddView()">Add</button>
 <p id="myPar"> button on </p>
 
-@(Html.Kendo().Window().Name("Details")
-    .Title("AddBook")
+@(Html.Kendo().Window().Name("AddNewBook")
+    .Title("Add Book")
     .Visible(false)
     .Modal(true)
     .Draggable(true)
     .Width(300)
     .LoadContentFrom("AddBook","Book")
 )
-
+@(Html.Kendo().Window().Name("EditBook")
+    .Title("Edit Book")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(300)
+    //.LoadContentFrom("EditBook", "Book")
+)
+@(Html.Kendo().Window().Name("BookDetails")
+    .Title("Book Details")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(300)
+    //.LoadContentFrom("BookDetails", "Book")
+)
 <script type="text/x-kendo-template" id="template">
     <div id="d">
         <p>Add WIndow</p>
@@ -50,15 +68,68 @@
 </script>
 
 <script type="text/javascript">
-    var detailsTemplate = kendo.template($("#template").html());
 
-    function showDetails() {
-        var wnd = $("#Details").data("kendoWindow");
-        $("#myPar").hide();
-        //wnd.content();
-        console.log(wnd.content());
-        wnd.center().open();
-    }
+    $(document).on("click", ("#backToList"), function ()
+    {
+        $(this).closest("#BookDetails").data("kendoWindow").close();
+    })
+    $(document).on("click",("#saveButton"),function () {
+
+
+            var formData = $('#editBookForm').serialize();
+
+            $.post('@Url.Action("EditBook")', formData, function (data, status) {
+
+                // alert(data);
+                if (data.isDone) {
+                    $("#editBookForm").closest("#EditBook").data("kendoWindow").close();
+                    $('#grid').data('kendoGrid').dataSource.read();
+                    $('#grid').data('kendoGrid').refresh();
+                }
+
+                else
+                    $("#editBookForm").parents("#EditBook").html(data);
+            });
+        }
+    )
+
+        function showAddView() {
+            var wnd = $("#AddNewBook").data("kendoWindow");
+            $("#myPar").hide();
+            wnd.center().open();
+        };
+        function showEditView(e){
+
+            debugger;
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var bookId = dataItem.BookId;
+            var url = '@Url.Action("EditBook", "Book")' + "/" + bookId;
+            var wnd = $("#EditBook").kendoWindow(
+                {
+                    title : "Edit Book",
+                    visible : false,
+                    modal: true,
+                    draggable: true,
+                    content : url
+
+                }).data("kendoWindow").title("EditBook");
+
+
+            wnd.center().open();
+        };
+        function showDetailsView(e) {
+            debugger;
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            var bookId = dataItem.BookId;
+            var url = '@Url.Action("BookDetails", "Book")' + "/" + bookId;
+            $.get(url, function (data) {
+                
+                var wnd = $("#BookDetails").data("kendoWindow");
+                wnd.content(data);
+                wnd.center().open();
+            })
+        };
+
 </script>
 
 <style type="text/css">

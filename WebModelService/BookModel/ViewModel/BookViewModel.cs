@@ -12,6 +12,8 @@ namespace WebModelServices.BookModel.ViewModel
 
         public int BookId { get; set; }
 
+        public int BookGenreId { get; set; }
+        public string BookGenre { get; set; }
         public string Author { get; set; }
 
         public string Title { get; set; }
@@ -26,6 +28,7 @@ namespace WebModelServices.BookModel.ViewModel
         public DateTime AddDate { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
+        public bool IsActive { get; set; }
 
     }
 }

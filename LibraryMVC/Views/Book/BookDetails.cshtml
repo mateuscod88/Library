@@ -1,0 +1,87 @@
+﻿@model WebModelServices.BookModel.ViewModel.BookDetailsViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Book Details</h4>
+        <hr />
+       
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.Author, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               
+                @Html.DisplayTextFor(model => model.BookDetails.Author)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DisplayTextFor(model => model.BookDetails.Title)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DisplayTextFor(model => model.BookDetails.Count)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.BookGenre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DisplayTextFor(model => model.BookDetails.BookGenre)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.ISBN, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DisplayTextFor(model => model.BookDetails.ISBN)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookDetails.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DisplayTextFor(model => model.BookDetails.IsActive)
+            </div>
+        </div>
+        </div>
+        <p>--------------------------------------------</p>
+        foreach (var borrow in Model.BorrowHistory)
+        {
+            <div>
+                @Html.LabelFor(model => @borrow.FromDate)
+                <div >
+
+                    @Html.DisplayTextFor(model => @borrow.FromDate)
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(model => @borrow.ToDate)
+                <div>
+
+                    @Html.DisplayTextFor(model => @borrow.ToDate)
+                </div>
+            </div>
+            <div>
+                @Html.LabelFor(model => @borrow.IsReturned)
+                <div>
+
+                    @Html.DisplayTextFor(model => @borrow.IsReturned)
+                </div>
+            </div>
+    }
+        <p>-------------------------------------------</p>
+}
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="button" id="backToList" value="Back To List" />
+     
+    </div>
+</div>

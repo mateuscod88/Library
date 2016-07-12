@@ -209,6 +209,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BookController.cs" />
+    <Compile Include="Controllers\BorrowController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -983,9 +984,13 @@
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Url.cshtml" />
     <Content Include="Views\Book\AddBook.cshtml" />
+    <Content Include="Views\Book\EditBook.cshtml" />
+    <Content Include="Views\Book\BookDetails.cshtml" />
+    <Content Include="Views\Shared\MyTemplate\CollectionGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Borrow\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -95,6 +95,7 @@
     <Compile Include="BookModel\BookService.cs" />
     <Compile Include="BookModel\IBookService.cs" />
     <Compile Include="BookModel\ViewModel\AddBookViewModel.cs" />
+    <Compile Include="BookModel\ViewModel\BookBorrowHistoryViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookDetailsViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookListViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookViewModel.cs" />

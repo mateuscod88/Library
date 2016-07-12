@@ -13,6 +13,8 @@ namespace WebModelServices.BookModel
         void AddNewBook(AddBookViewModel bookViewModel);
         BookViewModel GetBookById(int bookId);
         void SaveBookViewModel(BookViewModel bookViewModel);
-
+        EditBookViewModel GetEditBookById(int bookId);
+        void SaveEditedBook(EditBookViewModel editBookViewModel);
+        BookDetailsViewModel GetBookDetailsById(int bookId);
     }
 }

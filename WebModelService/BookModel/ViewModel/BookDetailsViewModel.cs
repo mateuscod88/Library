@@ -8,5 +8,7 @@ namespace WebModelServices.BookModel.ViewModel
 {
     public class BookDetailsViewModel
     {
+        public BookViewModel BookDetails { get; set; }
+        public IList<BookBorrowHistoryViewModel> BorrowHistory { get; set; }
     }
 }

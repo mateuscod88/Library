@@ -81,7 +81,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BorrowModel\" />
     <Folder Include="ReportsModel\" />
     <Folder Include="UserModel\Contracts\DTO\" />
   </ItemGroup>
@@ -100,6 +99,7 @@
     <Compile Include="BookModel\ViewModel\BookListViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookViewModel.cs" />
     <Compile Include="BookModel\ViewModel\EditBookViewModel.cs" />
+    <Compile Include="BorrowModel\BorrowService.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\BorrowHistoryViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\DetailsViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\UserBookViewModel.cs" />

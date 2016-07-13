@@ -1,23 +1,13 @@
-﻿@model  IList<WebModelServices.BookModel.ViewModel.BookViewModel>
+﻿@model IList<WebModelServices.BorrowModel.ViewModel.BorrowsViewModel>
 
-<p>
-    
-
-</p>
-@(Html.Kendo().Grid<WebModelServices.BookModel.ViewModel.BookViewModel>()
+@(Html.Kendo().Grid<WebModelServices.BorrowModel.ViewModel.UserWithBorrowsViewModel>()
         .Name("grid")
         .Columns(columns =>
         {
-            columns.Bound(c => c.Author)
+            columns.Bound(c => c.FirstName)
               .Width(240);
-            columns.Bound(c => c.Title);
-            columns.Bound(c => c.ISBN);
-            columns.Bound(c => c.ReleaseDate).Width(150);
-            columns.Bound(c => c.BookGenre).Width(150);
-            columns.Command(command => command.Custom("Edit").Click("showEditView")).Width(150);
-            columns.Command(command => command.Custom("Details").Click("showDetailsView")).Width(150);
-           
-        
+            columns.Bound(c => c.LastName);
+            columns.Bound(c => c.BookName);
         })
         .HtmlAttributes(new { style = "height: 550px;" })
         .Scrollable()
@@ -29,27 +19,59 @@
             .ButtonCount(5))
         .DataSource(dataSource => dataSource
             .Ajax()
-            .Read(read => read.Action("AllBooks", "Book"))
+            .Read(read => read.Action("GetUsersWithBorrows", "Borrow"))
             .PageSize(20)
         )
 )
-<button type="button" class="myButton" onclick="showAddView()">Add</button>
-<p id="myPar"> button on </p>
 
-@(Html.Kendo().Window().Name("AddNewBook")
+@(Html.Kendo().Grid<WebModelServices.BorrowModel.ViewModel.BorrowedBookViewModel>()
+        .Name("grid1")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Title)
+              .Width(240);
+            columns.Bound(c => c.Author);
+            columns.Bound(c => c.FromDate);
+            columns.Bound(c => c.ToDate);
+            columns.Bound(c => c.ISBN);
+            columns.Bound(c => c.UserName);
+        })
+        .HtmlAttributes(new { style = "height: 550px;" })
+        .Scrollable()
+        .Groupable()
+        .Sortable()
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("GetBorrowedBook", "Borrow"))
+            .PageSize(20)
+        )
+)
+@(Html.Kendo().Button()
+            .Name("AddBorrow")
+            .Tag("a")
+            .Content("Add New Borrow"))
+@*<button type="button" class="myButton" onclick="showAddView()">Add Borrow</button>
+<p id="myPar"> button on </p>*@
+
+@(Html.Kendo().Window().Name("AddNewBorrow")
     .Title("Add Book")
     .Visible(false)
     .Modal(true)
     .Draggable(true)
     .Width(300)
-    //.LoadContentFrom("AddBook","Book")
+    //.LoadContentFrom("AddBook", "Book")
 )
-@(Html.Kendo().Window().Name("EditBook")
+@*@(Html.Kendo().Window().Name("EditBook")
     .Title("Edit Book")
     .Visible(false)
     .Modal(true)
     .Draggable(true)
     .Width(300)
+//.LoadContentFrom("EditBook", "Book")
 )
 @(Html.Kendo().Window().Name("BookDetails")
     .Title("Book Details")
@@ -57,7 +79,9 @@
     .Modal(true)
     .Draggable(true)
     .Width(300)
-)
+//.LoadContentFrom("BookDetails", "Book")
+)*@
+
 <script type="text/x-kendo-template" id="template">
     <div id="d">
         <p>Add WIndow</p>
@@ -67,7 +91,20 @@
 
 <script type="text/javascript">
 
-    $(document).on("click", ("#backToList"), function ()
+    $(document).on("click",("#AddBorrow"),function showAddNewBorrowView(e) {
+        
+        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //var bookId = dataItem.BookId;
+        var url = '@Url.Action("AddNewBorrow", "Borrow")';
+        $.get(url, function (data) {
+            var wnd = $("#AddNewBorrow").data("kendoWindow");
+            wnd.content(data);
+            debugger;
+            wnd.center().open();
+        })
+    })
+
+    @*$(document).on("click", ("#backToList"), function ()
     {
         $(this).closest("#BookDetails").data("kendoWindow").close();
     })
@@ -93,13 +130,8 @@
 
         function showAddView() {
             var wnd = $("#AddNewBook").data("kendoWindow");
-            var url = '@Url.Action("AddBook", "Book")';
-            $.get(url, function (data) {
-
-                var wnd = $("#AddNewBook").data("kendoWindow");
-                wnd.content(data);
-                wnd.center().open();
-            })  
+            $("#myPar").hide();
+            wnd.center().open();
         };
         function showEditView(e){
 
@@ -116,20 +148,11 @@
                     content : url
 
                 }).data("kendoWindow").title("EditBook");
+
+
             wnd.center().open();
-        };
-        function showDetailsView(e) {
-            debugger;
-            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-            var bookId = dataItem.BookId;
-            var url = '@Url.Action("BookDetails", "Book")' + "/" + bookId;
-            $.get(url, function (data) {
-                
-                var wnd = $("#BookDetails").data("kendoWindow");
-                wnd.content(data);
-                wnd.center().open();
-            })
-        };
+        };*@
+        
 
 </script>
 

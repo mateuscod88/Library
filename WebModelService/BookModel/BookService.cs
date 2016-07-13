@@ -49,7 +49,7 @@ namespace WebModelServices.BookModel
                 book.ModifiedDate = System.DateTime.Now;
                 book.ISBN = bookViewModel.ISBN;
                 book.ReleaseDate = bookViewModel.ReleaseDate;
-                book.BookGenreId = 2;
+                book.BookGenreId = bookViewModel.BookGenreId;
 
             using (var context = new BookLibraryEF())
             {
@@ -104,7 +104,7 @@ namespace WebModelServices.BookModel
                     ISBN = m.ISBN,
                     Title = m.Title,
                     ReleaseDate = m.ReleaseDate,
-                    BookGenreId = m.BookGenreId,
+                    BookGenreIdd = m.BookGenreId,
                 })
                 .Where(m => m.BookId == bookId)
                 .FirstOrDefault();
@@ -119,11 +119,11 @@ namespace WebModelServices.BookModel
                 var selectedBook = _context.Books.SingleOrDefault(m => (m.BookId == editBookViewModel.BookId));
                 selectedBook.Author = editBookViewModel.Author;
                 selectedBook.Count = editBookViewModel.Count;
-                selectedBook.Title = editBookViewModel.Title;
+                selectedBook.Title = editBookViewModel.Title; 
                 selectedBook.ReleaseDate = editBookViewModel.ReleaseDate;
                 selectedBook.ISBN = editBookViewModel.ISBN;
                 selectedBook.ModifiedDate = System.DateTime.Now;
-                selectedBook.BookGenreId = editBookViewModel.BookGenreId;
+                selectedBook.BookGenreId = editBookViewModel.BookGenreIdd;
                 _context.SaveChanges();
 
             }
@@ -161,6 +161,16 @@ namespace WebModelServices.BookModel
 
                 return bookDetailsViewModel;
             }
+        }
+        public IList<DictBookGenreModel> GetBookGenre()
+        {
+            var allBookGenre = (from dict in _context.DictBookGenre
+                                select new DictBookGenreModel
+                                {
+                                    BookGenreId = dict.BookGenreId,
+                                    Name = dict.Name
+                                }).ToList();
+            return allBookGenre;
         }
     }
 }

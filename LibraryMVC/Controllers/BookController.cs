@@ -68,7 +68,7 @@ namespace LibraryMVC.Controllers
             }
             else
             {
-                return PartialView("AddBook", editBookViewModel);
+                return PartialView("EditBook", editBookViewModel);
             }
 
         }
@@ -78,7 +78,11 @@ namespace LibraryMVC.Controllers
             
             return PartialView(_bookService.GetBookDetailsById(id));
         }
-
+        public JsonResult GetBookGenre()
+        {
+            IList<DictBookGenreModel> bookGenreModel = _bookService.GetBookGenre();
+            return Json(bookGenreModel, JsonRequestBehavior.AllowGet);
+        }
 
     }
         

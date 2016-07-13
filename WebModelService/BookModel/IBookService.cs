@@ -16,5 +16,6 @@ namespace WebModelServices.BookModel
         EditBookViewModel GetEditBookById(int bookId);
         void SaveEditedBook(EditBookViewModel editBookViewModel);
         BookDetailsViewModel GetBookDetailsById(int bookId);
+        IList<DictBookGenreModel> GetBookGenre();
     }
 }

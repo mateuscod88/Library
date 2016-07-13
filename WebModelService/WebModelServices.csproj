@@ -98,8 +98,15 @@
     <Compile Include="BookModel\ViewModel\BookDetailsViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookListViewModel.cs" />
     <Compile Include="BookModel\ViewModel\BookViewModel.cs" />
+    <Compile Include="BookModel\ViewModel\DictBookGenreModel.cs" />
     <Compile Include="BookModel\ViewModel\EditBookViewModel.cs" />
     <Compile Include="BorrowModel\BorrowService.cs" />
+    <Compile Include="BorrowModel\IBorrowService.cs" />
+    <Compile Include="BorrowModel\ViewModel\BorrowedBookViewModel.cs" />
+    <Compile Include="BorrowModel\ViewModel\BorrowsViewModel.cs" />
+    <Compile Include="BorrowModel\ViewModel\NewBorrowViewModel.cs" />
+    <Compile Include="BorrowModel\ViewModel\UsersAddBorrowViewModel.cs" />
+    <Compile Include="BorrowModel\ViewModel\UserWithBorrowsViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\BorrowHistoryViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\DetailsViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\UserBookViewModel.cs" />

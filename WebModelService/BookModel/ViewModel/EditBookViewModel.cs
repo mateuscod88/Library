@@ -22,6 +22,6 @@ namespace WebModelServices.BookModel.ViewModel
         [Required]
         public int Count { get; set; }
         [Required]
-        public int BookGenreId { get; set; }
+        public int BookGenreIdd { get; set; }
     }
 }

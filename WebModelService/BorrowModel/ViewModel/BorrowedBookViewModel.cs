@@ -5,23 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebModelServices.BookModel.ViewModel
+namespace WebModelServices.BorrowModel.ViewModel
 {
-    public class AddBookViewModel
+    public class BorrowedBookViewModel
     {
+        public int BookId { get; set; }
+
+        
         [Required]
         public string Author { get; set; }
+
         [Required]
         public string Title { get; set; }
-        
-        public DateTime? ReleaseDate { get; set; }
+
         [Required]
         public string ISBN { get; set; }
 
-        [Required]
-        public int Count { get; set; }
-        public int BookGenreId { get; set; }
 
-        public DateTime? ModifiedDate { get; set; }
+        public int Count { get; set; }
+
+        public string UserName { get; set; }
+        public DateTime FromDate { get; set; }
+
+        public DateTime ToDate { get; set; }
     }
 }

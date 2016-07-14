@@ -68,5 +68,15 @@ namespace WebModelServices.BorrowModel
                                    }).ToList();
             return allUsers;
         }
+        public IList<BooksAddBorrowViewModel> GetAllBooks()
+        {
+            var allBooks = _context.Books
+                                   .Select(m => new BooksAddBorrowViewModel
+                                   {
+                                       BookId = m.BookId,
+                                       Title = m.Title
+                                   }).ToList();
+            return allBooks;
+        }
     }
 }

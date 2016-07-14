@@ -42,14 +42,19 @@
     .Modal(true)
     .Draggable(true)
     .Width(300)
-    //.LoadContentFrom("AddBook","Book")
+    .Events(e =>    
+        e.Close("onClose")
+    )
+    .Actions(a => a.Custom("custom"))
 )
+
 @(Html.Kendo().Window().Name("EditBook")
     .Title("Edit Book")
     .Visible(false)
     .Modal(true)
     .Draggable(true)
     .Width(300)
+    .Actions(a => a.Custom("custom"))
 )
 @(Html.Kendo().Window().Name("BookDetails")
     .Title("Book Details")
@@ -57,11 +62,11 @@
     .Modal(true)
     .Draggable(true)
     .Width(300)
+    .Actions(a => a.Custom("custom"))
 )
 <script type="text/x-kendo-template" id="template">
     <div id="d">
-        <p>Add WIndow</p>
-        <p>Add WIndow</p>
+        
     </div>
 </script>
 
@@ -69,16 +74,26 @@
 
     $(document).on("click", ("#backToList"), function ()
     {
-        $(this).closest("#BookDetails").data("kendoWindow").close();
+            $(this).closest("#BookDetails").data("kendoWindow").close();
+    })
+
+    $(document).on("click",("#addBookCloseButton"),function () {
+            var emptyString = "";
+            var wnd = $("#books").closest("#AddNewBook").data("kendoWindow");
+            wnd.close();
+            wnd.content(emptyString);
+    })
+    $(document).on("click", ("#editBookCancelButton"), function () {
+            var emptyString = "";
+            var wnd = $("#EditBook").data("kendoWindow");
+            wnd.close();
+            wnd.content(emptyString);
     })
     $(document).on("click",("#saveButton"),function () {
-
-
             var formData = $('#editBookForm').serialize();
-
             $.post('@Url.Action("EditBook")', formData, function (data, status) {
 
-                // alert(data);
+                
                 if (data.isDone) {
                     $("#editBookForm").closest("#EditBook").data("kendoWindow").close();
                     $('#grid').data('kendoGrid').dataSource.read();
@@ -87,50 +102,43 @@
 
                 else
                     $("#editBookForm").parents("#EditBook").html(data);
-            });
-        }
-    )
-
-        function showAddView() {
+            })
+      })
+      function showAddView() {
             var wnd = $("#AddNewBook").data("kendoWindow");
             var url = '@Url.Action("AddBook", "Book")';
             $.get(url, function (data) {
-
                 var wnd = $("#AddNewBook").data("kendoWindow");
                 wnd.content(data);
                 wnd.center().open();
             })  
-        };
-        function showEditView(e){
-
-            debugger;
+        }
+      function showEditView(e) {
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
             var bookId = dataItem.BookId;
             var url = '@Url.Action("EditBook", "Book")' + "/" + bookId;
-            var wnd = $("#EditBook").kendoWindow(
-                {
-                    title : "Edit Book",
-                    visible : false,
-                    modal: true,
-                    draggable: true,
-                    content : url
-
-                }).data("kendoWindow").title("EditBook");
-            wnd.center().open();
-        };
-        function showDetailsView(e) {
-            debugger;
+            $.get(url, function (data) {
+                var wnd = $("#EditBook").data("kendoWindow");
+                wnd.content(data);
+                wnd.center().open();
+            })
+      }
+      function showDetailsView(e) {
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
             var bookId = dataItem.BookId;
             var url = '@Url.Action("BookDetails", "Book")' + "/" + bookId;
             $.get(url, function (data) {
-                
+                debugger;
                 var wnd = $("#BookDetails").data("kendoWindow");
                 wnd.content(data);
                 wnd.center().open();
             })
-        };
-
+       }
+       function onClose() {
+            var emptyString = "";
+            var wnd = $("#books").closest("#AddNewBook").data("kendoWindow");
+            wnd.content(emptyString);
+        }
 </script>
 
 <style type="text/css">

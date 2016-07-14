@@ -61,6 +61,7 @@
                   read.Action("GetBookGenre", "Book");
               });
           })
+          
           .HtmlAttributes(new { style = "width: 50%" })
                 )
                 </div>
@@ -71,15 +72,12 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
               <input id="addButton" type="button"  value="AddButton">
-            <p id="pTest">ddd</p>
+              <input id="addBookCloseButton" type="button" value="Cancel">
             </div>
         </div>
    
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 <script>
     $(document).ready(function () {
         $("#addButton").click(function () {
@@ -90,13 +88,13 @@
                // alert(data);
                 if (data.isDone)
                 {
-                    debugger;
+                    
                     var emptyString = "";
                     var wnd = $("#books").closest("#AddNewBook").data("kendoWindow");
                     $('#grid').data('kendoGrid').dataSource.read();
                     $('#grid').data('kendoGrid').refresh();
-                    wnd.content(emptyString);
                     wnd.close();
+                    wnd.content(emptyString);
                 }
                    
                 else

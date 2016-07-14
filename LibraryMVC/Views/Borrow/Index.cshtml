@@ -63,6 +63,7 @@
     .Modal(true)
     .Draggable(true)
     .Width(300)
+    
     //.LoadContentFrom("AddBook", "Book")
 )
 @*@(Html.Kendo().Window().Name("EditBook")
@@ -92,14 +93,10 @@
 <script type="text/javascript">
 
     $(document).on("click",("#AddBorrow"),function showAddNewBorrowView(e) {
-        
-        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-        //var bookId = dataItem.BookId;
         var url = '@Url.Action("AddNewBorrow", "Borrow")';
         $.get(url, function (data) {
             var wnd = $("#AddNewBorrow").data("kendoWindow");
             wnd.content(data);
-            debugger;
             wnd.center().open();
         })
     })

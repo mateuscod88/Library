@@ -11,9 +11,25 @@ namespace WebModelServices.BorrowModel
     public class BorrowService : IBorrowService
     {
         private BookLibraryEF _context;
+        private static List<int> _selectedBooks;
+        public static List<int> SelectedBooks
+        {
+            get
+            {
+                if (_selectedBooks == null)
+                    _selectedBooks = new List<int>();
+                return _selectedBooks;
+            }
+
+            set
+            {
+                _selectedBooks = value;
+            }
+        }
         public BorrowService()
         {
             _context = new BookLibraryEF();
+            
         }
         public BorrowsViewModel GetBorrowListViewModel()
         {
@@ -26,16 +42,16 @@ namespace WebModelServices.BorrowModel
                                   {
                                       Author = book.Author,
                                       Title = book.Title,
-                                     ISBN = book.ISBN,
-                                     Count = book.Count,
-                                     BookId = book.BookId,
-                                     FirstName = user.FirstName,
-                                     LastName = user.LastName,
-                                     UserId = user.UserId,
-                                     FromDate = borrow.FromDate,
-                                     ToDate = borrow.ToDate
+                                      ISBN = book.ISBN,
+                                      Count = book.Count,
+                                      BookId = book.BookId,
+                                      FirstName = user.FirstName,
+                                      LastName = user.LastName,
+                                      UserId = user.UserId,
+                                      FromDate = borrow.FromDate,
+                                      ToDate = borrow.ToDate
 
-                                     };
+                                   };
             foreach(var borrow in selectedBorrows)
             {
 
@@ -76,6 +92,31 @@ namespace WebModelServices.BorrowModel
                                        BookId = m.BookId,
                                        Title = m.Title
                                    }).ToList();
+            return allBooks;
+        }
+        public IList<BooksAddBorrowViewModel> GetBooksAndRemoveRedudant(int bookId)
+        {
+            
+            var allBooks = _context.Books
+                                   .Select(m => new BooksAddBorrowViewModel
+                                   {
+                                       BookId = m.BookId,
+                                       Title = m.Title
+                                   }).ToList();
+            if(SelectedBooks.Any(m => m == bookId) || bookId == 1)
+            {
+                SelectedBooks.Clear();
+            }
+            if(allBooks.Any(m=> m.BookId == bookId))
+            {
+                SelectedBooks.Add(bookId);
+            }
+            foreach(var book in SelectedBooks)
+            {
+                var bookToDelete = allBooks.SingleOrDefault(m=> m.BookId == book);
+                allBooks.Remove(bookToDelete);
+            }
+
             return allBooks;
         }
     }

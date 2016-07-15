@@ -14,32 +14,47 @@
           })
           .HtmlAttributes(new { style = "width: 100%" })
         )
+        <p></p>
+        <div>
+            @(Html.Kendo().DropDownList()
+          .Name("dropdownlist1")
+          .DataTextField("Title")
+          .DataValueField("BookId")
+          .CascadeFromField("cascadeDD")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("RetrieveBorrows/1", "Borrow");
+              });
+          })
+          .Events(e => e.Change("dropDownChange"))
+          .HtmlAttributes(new { style = "width: 100%" })
+            )
+        </div>
     </div>
     
     <input type="button" value="Add next" id="addNext" />
      
 </div>
 <script>
-    var TempId = 1;
-    @*function retrieveData(id) {
-        debugger;
-        var dropDownList = $(id).data("kendoDropDownList");
-        var url = '@Url.Action("RetrieveBorrows", "Borrow")';
-        $.get(url, function (data) {
-            dropDownList.content(data);
-        })
-    };*@
-    $(document).on("click", ("#addNext"), function addNextBorrowDropDownList(e) {
-        var dropdownlist = "<input id=" + "\"dropdownlist" + TempId + "\"/>"+"<input id=\"rem-btn"+TempId+"\""+"type=\"button\" value=\"Remove\"/>"
-        var newdropDownId = "#dropdownlist" + TempId;
-        var header = "<h4>" + newdropDownId + "</h4>"
-        $("#dropDownDiv").append(header);
-        $("#dropDownDiv").append(dropdownlist);
-
-        addDropDownList(TempId);
-        TempId++;
-    });
-
+    var TempId = 2;
+    var booksList;
+    var bookToRemove;
+    var indexToRemove;
+    function cascadeDD()
+    {
+        alert("Cascade");
+    }
+    function myFunction(item,index)
+    {
+        
+        if (item.BookId == bookToRemove)
+        {
+            alert("wejsszlo");
+            indexToRemove = index;
+        };
+    }
     function addDropDownList(id)
     {
         
@@ -48,6 +63,7 @@
         {
             debugger;
             id--;
+            var dataFromDropDown;
             var previousDropDownId = "#dropdownlist" + id;
             var previousdropDownList = $(previousDropDownId).data("kendoDropDownList");
             var bookId = previousdropDownList.value();
@@ -58,23 +74,49 @@
             var url = '@Url.Action("RetrieveBorrows", "Borrow")'+"/"+ 0;
 
         }
-        var dropDownList = $(dropDownId).data("kendoDropDownList");
-        $.get(url, function (data) {
+        
+        $.get(url, function (result) {
+            
+            
+            debugger;
+            
             $(dropDownId).kendoDropDownList({
-                  dataSource: data,
+                  dataSource: result,
                   dataTextField: "Title",
                   dataValueField: "BookId",
+                  change: dropDownChange,
+                  cascade: cascadeDD ,
                   animation: {
-                    close: {
+                    close:{
                               effects: "fadeOut zoom:out",
                               duration: 300
-                    },
+                          },
                     open: {
                               effects: "fadeIn zoom:in",
                               duration: 300
-                    }
+                          }
                   }
             });
+            var dataDD = result;
+            var previousWnd = $(previousDropDownId).data("kendoDropDownList");
+            var dropDownList = $(dropDownId).data("kendoDropDownList");
+            bookToRemove = dropDownList.value();
+            dataFromDropDown = previousWnd.dataSource._data;
+            dataFromDropDown.forEach(myFunction);
+            dataFromDropDown.slice(indexToRemove);
+            dataFromDropDown.forEach(myFunction);
+            alert(indexToRemove);
+
+            
         })
+        debugger;
+        //var dt = dataFromDropDown;
+        //var previousWnd = $(previousDropDownId).data("kendoDropDownList");
+        //var dropDownList = $(dropDownId).data("kendoDropDownList");
+        //bookToRemove = previousWnd.value();
+        //dataFromDropDown.forEach(myFunction);
+        //alert(indexToRemove);
+        //dataFromDropDown.slice(indexToRemove);
+        //previousWnd.content(dataFromDropDown);
     }
 </script>

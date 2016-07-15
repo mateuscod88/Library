@@ -10,6 +10,7 @@ namespace WebModelServices.BorrowModel
      interface IBorrowService
     {
         IList<UsersAddBorrowViewModel> GetAllUsers();
-         BorrowsViewModel GetBorrowListViewModel();
+        BorrowsViewModel GetBorrowListViewModel();
+        IList<BooksAddBorrowViewModel> GetBooksAndRemoveRedudant(int bookId);
     }
 }

@@ -63,6 +63,7 @@
     .Modal(true)
     .Draggable(true)
     .Width(300)
+    .Events(e => e.Close("onCloseAddNewBorrow"))
     
     //.LoadContentFrom("AddBook", "Book")
 )
@@ -92,7 +93,15 @@
 
 <script type="text/javascript">
 
-    $(document).on("click",("#AddBorrow"),function showAddNewBorrowView(e) {
+    function onCloseAddNewBorrow()
+    {
+        
+        var emptyString = "";
+        $("#Testowy").empty();
+        var wnd = $("#AddNewBorrow").data("kendoWindow");
+        wnd.content(emptyString);
+    }
+    $(document).on("click", ("#AddBorrow"), function showAddNewBorrowView(e) {
         var url = '@Url.Action("AddNewBorrow", "Borrow")';
         $.get(url, function (data) {
             var wnd = $("#AddNewBorrow").data("kendoWindow");
@@ -100,6 +109,20 @@
             wnd.center().open();
         })
     })
+    $(document).on("click", ("#addNext"), function addNextBorrowDropDownList(e) {
+        var dropdownlist = "<input id=" + "\"dropdownlist" + TempId + "\"/>" + "<input id=\"rem-btn" + TempId + "\"" + "type=\"button\" value=\"Remove\"/>"
+        var newdropDownId = "#dropdownlist" + TempId;
+        var header = "<h4>" + newdropDownId + "</h4>"
+        $("#dropDownDiv").append(header);
+        $("#dropDownDiv").append(dropdownlist);
+     
+        addDropDownList(TempId);
+        TempId++;
+    })
+    function dropDownChange (e)
+    {
+        alert("change");
+    }
 
     @*$(document).on("click", ("#backToList"), function ()
     {

@@ -14,6 +14,7 @@ namespace LibraryMVC.Controllers
     public class BorrowController : Controller
     {
         // GET: Borrow
+        
         private BorrowService _borrowService;
         public BorrowController()
         {
@@ -59,12 +60,9 @@ namespace LibraryMVC.Controllers
         }
         public JsonResult RetrieveBorrows(int id)
         {
-
             int Id = id;
-            return Json(_borrowService.GetAllBooks(), JsonRequestBehavior.AllowGet);
+            var books = _borrowService.GetBooksAndRemoveRedudant(id);
+            return Json( books, JsonRequestBehavior.AllowGet);
         }
-
-       
-
     }
 }

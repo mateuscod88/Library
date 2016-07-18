@@ -121,59 +121,104 @@
     })
     function dropDownChange (e)
     {
-        alert("change");
+        debugger;
+        //addObjectToDropDown(indexToAdd, e.sender)
+        var currentDropDownId = "#"+e.sender.element.context.id;
+
+        addToAllDD(indexToAdd, currentDropDownId);
+        bookToRemoveId = e.sender.value();
+        removeBookFromAllDD(bookToRemoveId, currentDropDownId);
+        
+    }
+    function dropDownOpen(e)
+    {
+        var val = e.sender.value();
+        var text = e.sender.text();
+        var div = $("#dropDownDiv").data();
+        indexToAdd.BookId = val;
+        indexToAdd.Title = text;
+        var allID = allDropDownId;
     }
 
-    @*$(document).on("click", ("#backToList"), function ()
+    function addObjectToDropDown(book, dropDownId)
     {
-        $(this).closest("#BookDetails").data("kendoWindow").close();
-    })
-    $(document).on("click",("#saveButton"),function () {
+        debugger;
+        var values = [];
+        var dd = $(dropDownId).data("kendoDropDownList");
+        var selectedDataSource = dd.dataSource;
+        var len = selectedDataSource._data.length;
+        if (len > 0) {
+            var i;
 
+            for (i = 0; i < len; i++) {
+                var previousIndex = 0;
+                if(i>0)
+                    previousIndex = i - 1;
 
-            var formData = $('#editBookForm').serialize();
-
-            $.post('@Url.Action("EditBook")', formData, function (data, status) {
-
-                // alert(data);
-                if (data.isDone) {
-                    $("#editBookForm").closest("#EditBook").data("kendoWindow").close();
-                    $('#grid').data('kendoGrid').dataSource.read();
-                    $('#grid').data('kendoGrid').refresh();
+                var val = {
+                    Title: selectedDataSource._data[i].Title,
+                    BookId: selectedDataSource._data[i].BookId
                 }
-
-                else
-                    $("#editBookForm").parents("#EditBook").html(data);
-            });
-        }
-    )
-
-        function showAddView() {
-            var wnd = $("#AddNewBook").data("kendoWindow");
-            $("#myPar").hide();
-            wnd.center().open();
-        };
-        function showEditView(e){
-
-            debugger;
-            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-            var bookId = dataItem.BookId;
-            var url = '@Url.Action("EditBook", "Book")' + "/" + bookId;
-            var wnd = $("#EditBook").kendoWindow(
+                if ((selectedDataSource._data[i].BookId > book.BookId) && (selectedDataSource._data[previousIndex].BookId < book.BookId))
                 {
-                    title : "Edit Book",
-                    visible : false,
-                    modal: true,
-                    draggable: true,
-                    content : url
+                    debugger;
+                    values.push(book);
+                    values.push(val);
+                }
+                else
+                {
+                    values.push(val)
+                }
+            }
+        }
+        $(dropDownId).data("kendoDropDownList").setDataSource(values);
+    }
+    function deleteObjectFromDropDown(bookToRemoveId,dropDownId)
+    {
+        debugger;
+        var values = [];
+        var selectedDataSource = $(dropDownId).data("kendoDropDownList").dataSource;
+        var len = selectedDataSource._data.length;
+        if (len > 0) {
+            var i;
 
-                }).data("kendoWindow").title("EditBook");
-
-
-            wnd.center().open();
-        };*@
-        
-
+            for (i = 0; i < len; i++) {
+                var val = {
+                    Title: selectedDataSource._data[i].Title,
+                    BookId: selectedDataSource._data[i].BookId
+                }
+                if (selectedDataSource._data[i].BookId != bookToRemoveId) {
+                    values.push(val);
+                }
+            }
+        }
+        $(dropDownId).data("kendoDropDownList").setDataSource(values);
+       
+    }
+    function removeBookFromAllDD(bookId,currentDropDownId)
+    {
+        var length = allDropDownId.length;
+        var currentElementId = currentDropDownId;
+        for (var i = 0; i < length; i++) {
+            debugger;
+            if (allDropDownId[i] != currentElementId) {
+                var selectedDropDown = allDropDownId[i];
+                deleteObjectFromDropDown(bookId, selectedDropDown);
+            }
+        }
+    }
+    function addToAllDD(objectToAdd,dropDownId)
+    {
+        var length = allDropDownId.length;
+        var currentElementId = dropDownId;
+        for (var i = 0; i < length; i++) {
+            debugger;
+            if (allDropDownId[i] != currentElementId) {
+                var selectedDropDown = allDropDownId[i];
+                addObjectToDropDown(objectToAdd, selectedDropDown);
+            }
+        }
+    }
 </script>
 
 <style type="text/css">

@@ -28,7 +28,7 @@
                   read.Action("RetrieveBorrows/1", "Borrow");
               });
           })
-          .Events(e => e.Change("dropDownChange"))
+          .Events(e => e.Change("dropDownChange").Open("dropDownOpen"))
           .HtmlAttributes(new { style = "width: 100%" })
             )
         </div>
@@ -42,26 +42,22 @@
     var booksList;
     var bookToRemove;
     var indexToRemove;
+    var indexToAdd = {Title:"",BookId:""};
+    var allDropDownId = ["#dropdownlist1"];
+    
     function cascadeDD()
     {
         alert("Cascade");
     }
-    function myFunction(item,index)
-    {
-        
-        if (item.BookId == bookToRemove)
-        {
-            alert("wejsszlo");
-            indexToRemove = index;
-        };
-    }
+  
     function addDropDownList(id)
     {
         
         var dropDownId = "#dropdownlist" + id;
+        allDropDownId.push(dropDownId);
         if (id > 1)
         {
-            debugger;
+           
             id--;
             var dataFromDropDown;
             var previousDropDownId = "#dropdownlist" + id;
@@ -85,7 +81,8 @@
                   dataTextField: "Title",
                   dataValueField: "BookId",
                   change: dropDownChange,
-                  cascade: cascadeDD ,
+                  //cascade: cascadeDD,
+                  open:dropDownOpen,
                   animation: {
                     close:{
                               effects: "fadeOut zoom:out",
@@ -98,15 +95,9 @@
                   }
             });
             var dataDD = result;
-            var previousWnd = $(previousDropDownId).data("kendoDropDownList");
             var dropDownList = $(dropDownId).data("kendoDropDownList");
             bookToRemove = dropDownList.value();
-            dataFromDropDown = previousWnd.dataSource._data;
-            dataFromDropDown.forEach(myFunction);
-            dataFromDropDown.slice(indexToRemove);
-            dataFromDropDown.forEach(myFunction);
-            alert(indexToRemove);
-
+            removeBookFromAllDD(bookToRemove, dropDownId);
             
         })
         debugger;

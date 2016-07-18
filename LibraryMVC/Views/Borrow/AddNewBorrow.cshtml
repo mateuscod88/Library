@@ -25,7 +25,7 @@
           {
               source.Read(read =>
               {
-                  read.Action("RetrieveBorrows/1", "Borrow");
+                  read.Action("RetrieveBorrows", "Borrow");
               });
           })
           .Events(e => e.Change("dropDownChange").Open("dropDownOpen"))
@@ -40,11 +40,53 @@
 <script>
     var TempId = 2;
     var booksList;
+    var selectedBooks = [];
     var bookToRemove;
     var indexToRemove;
     var indexToAdd = {Title:"",BookId:""};
     var allDropDownId = ["#dropdownlist1"];
     
+    function prepareDataForDD(data)
+    {
+        var len = data.length;
+        var selectedBooksLength = selectedBooks.length;
+        var newDataForDD = [];
+        for(var i = 0; i<len; i++)
+        {
+            var isBookSelected;
+            var count = 0;
+            for (var j = 0; j < selectedBooksLength ; j++)
+            {
+                
+                debugger;
+                if(data[i].BookId == selectedBooks[j].BookId  )
+                {
+                    isBookSelected = true;
+                    count++;
+                }
+                if(count<1)
+                    isBookSelected = false;
+            }
+                
+            if(!isBookSelected)
+            {
+                var book = { Title: data[i].Title, BookId: data[i].BookId };
+                newDataForDD.push(book);
+            }
+        }
+        
+        return newDataForDD;
+    }
+    function markSelectedBook(book)
+    {
+        selectedBooks.push({ Title: book.Title, BookId: book.BookId });
+    }
+    function unmarkSelectedBook(book)
+    {
+        var index = selectedBooks.indexOf(book);
+        if (index > -1)
+            selectedBooks.slice(index);
+    }
     function cascadeDD()
     {
         alert("Cascade");
@@ -63,11 +105,11 @@
             var previousDropDownId = "#dropdownlist" + id;
             var previousdropDownList = $(previousDropDownId).data("kendoDropDownList");
             var bookId = previousdropDownList.value();
-            var url = '@Url.Action("RetrieveBorrows", "Borrow")' + "/" + bookId;
+            var url = '@Url.Action("RetrieveBorrows", "Borrow")';
         }
         else
         {
-            var url = '@Url.Action("RetrieveBorrows", "Borrow")'+"/"+ 0;
+            var url = '@Url.Action("RetrieveBorrows", "Borrow")';
 
         }
         
@@ -76,8 +118,18 @@
             
             debugger;
             
+            if (selectedBooks.length == 0) {
+                var dropDown1 = $("#dropdownlist1").data("kendoDropDownList");
+                var selectedBook = { Title: dropDown1.text(), BookId: dropDown1.value() };
+                markSelectedBook(selectedBook);
+                newResult = prepareDataForDD(result);
+            }
+            else if (selectedBooks.length > 0)
+            {
+                 newResult = prepareDataForDD(result);
+            }
             $(dropDownId).kendoDropDownList({
-                  dataSource: result,
+                  dataSource: newResult,
                   dataTextField: "Title",
                   dataValueField: "BookId",
                   change: dropDownChange,
@@ -94,8 +146,10 @@
                           }
                   }
             });
-            var dataDD = result;
+            //var dataDD = result;
             var dropDownList = $(dropDownId).data("kendoDropDownList");
+            var selectedBook = { Title: dropDownList.text(), BookId: dropDownList.value() };
+            markSelectedBook(selectedBook);
             bookToRemove = dropDownList.value();
             removeBookFromAllDD(bookToRemove, dropDownId);
             

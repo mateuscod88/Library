@@ -95,7 +95,6 @@
 
     function onCloseAddNewBorrow()
     {
-        
         var emptyString = "";
         $("#Testowy").empty();
         var wnd = $("#AddNewBorrow").data("kendoWindow");
@@ -144,6 +143,7 @@
     {
         debugger;
         var values = [];
+        var selectedBooks = [];
         var dd = $(dropDownId).data("kendoDropDownList");
         var selectedDataSource = dd.dataSource;
         var len = selectedDataSource._data.length;

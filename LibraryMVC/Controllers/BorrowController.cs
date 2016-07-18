@@ -58,10 +58,9 @@ namespace LibraryMVC.Controllers
             IList<UsersAddBorrowViewModel> userAddBorrowViewModel = _borrowService.GetAllUsers();
             return Json(userAddBorrowViewModel , JsonRequestBehavior.AllowGet);
         }
-        public JsonResult RetrieveBorrows(int id)
+        public JsonResult RetrieveBorrows()
         {
-            int Id = id;
-            var books = _borrowService.GetBooksAndRemoveRedudant(id);
+            var books = _borrowService.GetAllBooks();
             return Json( books, JsonRequestBehavior.AllowGet);
         }
     }

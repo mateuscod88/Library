@@ -108,11 +108,21 @@
             wnd.center().open();
         })
     })
+    $(document).on("click", ("#rem-btn"), function removeBorrowDropDown(e) {
+        debugger;
+        var lastDD = lastDropDown();
+        var dropDownToRemove = $(lastDD).data("kendoDropDownList");
+        var book = { Title: dropDownToRemove.text(), BookId: dropDownToRemove.value() };
+        dropDownToRemove.wrapper.hide();
+
+        removeLastDropDownId();
+        unmarkSelectedBook(book);
+        addToAllDD(book, lastDD);
+    })
     $(document).on("click", ("#addNext"), function addNextBorrowDropDownList(e) {
-        var dropdownlist = "<input id=" + "\"dropdownlist" + TempId + "\"/>" + "<input id=\"rem-btn" + TempId + "\"" + "type=\"button\" value=\"Remove\"/>"
+       // var dropdownlist = "<div class=\"addDDdiv\">" + "<input id=" + "\"dropdownlist" + TempId + "\"/>" + "<input id=\"rem-btn\"" + "type=\"button\" value=\"Remove\"/>" + "</div>";
+        var dropdownlist = "<div class=\"addDDdiv\">" + "<input id=" + "\"dropdownlist" + TempId + "\"/>"+"</div>";
         var newdropDownId = "#dropdownlist" + TempId;
-        var header = "<h4>" + newdropDownId + "</h4>"
-        $("#dropDownDiv").append(header);
         $("#dropDownDiv").append(dropdownlist);
      
         addDropDownList(TempId);
@@ -123,10 +133,12 @@
         debugger;
         //addObjectToDropDown(indexToAdd, e.sender)
         var currentDropDownId = "#"+e.sender.element.context.id;
-
+        
         addToAllDD(indexToAdd, currentDropDownId);
+        unmarkSelectedBook(indexToAdd);
         bookToRemoveId = e.sender.value();
         removeBookFromAllDD(bookToRemoveId, currentDropDownId);
+        markSelectedBook(bookToRemoveId);
         
     }
     function dropDownOpen(e)
@@ -152,16 +164,16 @@
 
             for (i = 0; i < len; i++) {
                 var previousIndex = 0;
-                if(i>0)
+                if(i > 0)
                     previousIndex = i - 1;
 
                 var val = {
                     Title: selectedDataSource._data[i].Title,
                     BookId: selectedDataSource._data[i].BookId
                 }
-                if ((selectedDataSource._data[i].BookId > book.BookId) && (selectedDataSource._data[previousIndex].BookId < book.BookId))
+                if ((selectedDataSource._data[i].BookId > book.BookId) && (selectedDataSource._data[previousIndex].BookId < book.BookId) || (selectedDataSource._data[0].BookId>book.BookId && i==0))
                 {
-                    debugger;
+                   
                     values.push(book);
                     values.push(val);
                 }
@@ -193,14 +205,13 @@
             }
         }
         $(dropDownId).data("kendoDropDownList").setDataSource(values);
-       
     }
     function removeBookFromAllDD(bookId,currentDropDownId)
     {
         var length = allDropDownId.length;
         var currentElementId = currentDropDownId;
         for (var i = 0; i < length; i++) {
-            debugger;
+            
             if (allDropDownId[i] != currentElementId) {
                 var selectedDropDown = allDropDownId[i];
                 deleteObjectFromDropDown(bookId, selectedDropDown);

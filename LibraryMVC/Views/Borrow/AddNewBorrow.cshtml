@@ -32,10 +32,11 @@
           .HtmlAttributes(new { style = "width: 100%" })
             )
         </div>
+       
     </div>
     
     <input type="button" value="Add next" id="addNext" />
-     
+     <input type="button" value="Remove Last" id="rem-btn" />
 </div>
 <script>
     var TempId = 2;
@@ -46,6 +47,25 @@
     var indexToAdd = {Title:"",BookId:""};
     var allDropDownId = ["#dropdownlist1"];
     
+    function removeLastDropDownId()
+    {
+        debugger;
+        var len = allDropDownId.length;
+        if(len>1)
+        {
+            var index = (len - 1);
+            allDropDownId.splice(index);
+        }
+
+    }
+    function lastDropDown()
+    {
+        debugger;
+        var len = allDropDownId.length;
+        var index = len - 1;
+        var lastDropDownId = allDropDownId[index];
+        return lastDropDownId;
+    }
     function prepareDataForDD(data)
     {
         var len = data.length;
@@ -58,7 +78,7 @@
             for (var j = 0; j < selectedBooksLength ; j++)
             {
                 
-                debugger;
+                
                 if(data[i].BookId == selectedBooks[j].BookId  )
                 {
                     isBookSelected = true;
@@ -79,13 +99,21 @@
     }
     function markSelectedBook(book)
     {
+        debugger;
         selectedBooks.push({ Title: book.Title, BookId: book.BookId });
     }
     function unmarkSelectedBook(book)
     {
-        var index = selectedBooks.indexOf(book);
+        debugger;
+        var len = selectedBooks.length;
+        var index = -1;
+        for (var i = 0; i < len; i++)
+        {
+            if (selectedBooks[i].BookId == book.BookId)
+                index = i;
+        }
         if (index > -1)
-            selectedBooks.slice(index);
+            selectedBooks.splice(index);
     }
     function cascadeDD()
     {
@@ -115,9 +143,6 @@
         
         $.get(url, function (result) {
             
-            
-            debugger;
-            
             if (selectedBooks.length == 0) {
                 var dropDown1 = $("#dropdownlist1").data("kendoDropDownList");
                 var selectedBook = { Title: dropDown1.text(), BookId: dropDown1.value() };
@@ -146,7 +171,6 @@
                           }
                   }
             });
-            //var dataDD = result;
             var dropDownList = $(dropDownId).data("kendoDropDownList");
             var selectedBook = { Title: dropDownList.text(), BookId: dropDownList.value() };
             markSelectedBook(selectedBook);
@@ -155,13 +179,6 @@
             
         })
         debugger;
-        //var dt = dataFromDropDown;
-        //var previousWnd = $(previousDropDownId).data("kendoDropDownList");
-        //var dropDownList = $(dropDownId).data("kendoDropDownList");
-        //bookToRemove = previousWnd.value();
-        //dataFromDropDown.forEach(myFunction);
-        //alert(indexToRemove);
-        //dataFromDropDown.slice(indexToRemove);
-        //previousWnd.content(dataFromDropDown);
+      
     }
 </script>

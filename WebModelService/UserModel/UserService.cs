@@ -25,7 +25,7 @@ namespace WebModelServices.UserModel.contracts.DTO
             {
                 var users = from user in context.User
                                 //from borrowShort in context.Borrow.Where(x => x.UserId == user.UserId).DefaultIfEmpty()
-                            join borrow in context.Borrow on user.UserId equals borrow.UserId
+                            join borrow in context.Borrows on user.UserId equals borrow.UserId
                             into borrowCount
                             from borrow in borrowCount.DefaultIfEmpty().GroupBy(m => user.UserId)
                             select new UserViewModel
@@ -122,7 +122,7 @@ namespace WebModelServices.UserModel.contracts.DTO
                         BirthDate = x.BirthDate,
                     }).FirstOrDefault();
 
-                var userBorrows = context.Borrow
+                var userBorrows = context.Borrows
                     .Where(m => m.UserId == userId)
                     .Select(m => new
                     {

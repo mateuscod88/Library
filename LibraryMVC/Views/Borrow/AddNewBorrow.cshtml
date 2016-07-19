@@ -32,11 +32,12 @@
           .HtmlAttributes(new { style = "width: 100%" })
             )
         </div>
-       
     </div>
     
-    <input type="button" value="Add next" id="addNext" />
+     <input type="button" value="Add next" id="addNext" />
      <input type="button" value="Remove Last" id="rem-btn" />
+     <input type="button" value="Borrow" id="borrow-btn" />
+
 </div>
 <script>
     var TempId = 2;
@@ -46,28 +47,32 @@
     var indexToRemove;
     var indexToAdd = {Title:"",BookId:""};
     var allDropDownId = ["#dropdownlist1"];
-    
+    $(document).ready(function () {
+        $("#rem-btn").attr("disabled", true);
+
+    })
     function removeLastDropDownId()
     {
-        debugger;
         var len = allDropDownId.length;
-        if(len>1)
+        if(len> 0)
         {
             var index = (len - 1);
-            allDropDownId.splice(index);
+            allDropDownId.splice(index,1);
         }
 
     }
     function lastDropDown()
     {
-        debugger;
         var len = allDropDownId.length;
         var index = len - 1;
         var lastDropDownId = allDropDownId[index];
+        if (lastDropDownId == "#dropdownlist1")
+            lastDropDownId = "stop";
         return lastDropDownId;
     }
     function prepareDataForDD(data)
     {
+        debugger;
         var len = data.length;
         var selectedBooksLength = selectedBooks.length;
         var newDataForDD = [];
@@ -113,7 +118,7 @@
                 index = i;
         }
         if (index > -1)
-            selectedBooks.splice(index);
+            selectedBooks.splice(index,1);
     }
     function cascadeDD()
     {
@@ -134,6 +139,7 @@
             var previousdropDownList = $(previousDropDownId).data("kendoDropDownList");
             var bookId = previousdropDownList.value();
             var url = '@Url.Action("RetrieveBorrows", "Borrow")';
+            $("#rem-btn").removeAttr("disabled");
         }
         else
         {
@@ -142,7 +148,7 @@
         }
         
         $.get(url, function (result) {
-            
+            debugger;
             if (selectedBooks.length == 0) {
                 var dropDown1 = $("#dropdownlist1").data("kendoDropDownList");
                 var selectedBook = { Title: dropDown1.text(), BookId: dropDown1.value() };

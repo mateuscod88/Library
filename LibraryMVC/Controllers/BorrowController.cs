@@ -63,5 +63,11 @@ namespace LibraryMVC.Controllers
             var books = _borrowService.GetAllBooks();
             return Json( books, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult AddBorrowsToUser(BorrowsToSaveModel borrowsToSaveModel)
+        {
+            _borrowService.SaveAllBorrowsToUser(borrowsToSaveModel);
+            return Json(new { isDone = true });
+        }
     }
 }

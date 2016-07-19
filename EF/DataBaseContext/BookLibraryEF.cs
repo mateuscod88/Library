@@ -14,7 +14,7 @@ namespace EF
         }
 
         public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<Borrow> Borrow { get; set; }
+        public virtual DbSet<Borrow> Borrows { get; set; }
         public virtual DbSet<DictBookGenre> DictBookGenre { get; set; }
         public virtual DbSet<User> User { get; set; }
 

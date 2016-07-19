@@ -104,6 +104,7 @@
     <Compile Include="BorrowModel\IBorrowService.cs" />
     <Compile Include="BorrowModel\ViewModel\BooksAddBorrowViewModel.cs" />
     <Compile Include="BorrowModel\ViewModel\BorrowedBookViewModel.cs" />
+    <Compile Include="BorrowModel\ViewModel\BorrowsToSaveModel.cs" />
     <Compile Include="BorrowModel\ViewModel\BorrowsViewModel.cs" />
     <Compile Include="BorrowModel\ViewModel\NewBorrowViewModel.cs" />
     <Compile Include="BorrowModel\ViewModel\UsersAddBorrowViewModel.cs" />

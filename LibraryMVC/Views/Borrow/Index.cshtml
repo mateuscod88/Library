@@ -100,6 +100,42 @@
         var wnd = $("#AddNewBorrow").data("kendoWindow");
         wnd.content(emptyString);
     }
+    function getAllToSave()
+    {
+        var len = allDropDownId.length;
+        var allBooks = [];
+        var borrowModel;
+        for (var i = 0; i < len; i++)
+        {
+            var dropDownId = allDropDownId[i];
+            var dd = $(dropDownId).data("kendoDropDownList");
+            var bookId = dd.value();
+            var title = dd.text();
+            allBooks.push({  "BookId": bookId,"Title":title});
+        }
+        debugger;
+        var userDropDown = $("#UserId").data("kendoDropDownList");
+        var user = { "UserId" : userDropDown.value() ,"Name" : userDropDown.text()};
+
+        borrowModel = { "User": user,"Borrows": allBooks };
+        return borrowModel;
+    }
+    $(document).on("click",("#borrow-btn"),function borrowBooks()
+    {
+        debugger;
+        var dd1 = $("#dropdownlist1").data("kendoDropDownList");
+        //var formData = getAllToSave();
+        var formData = getAllToSave();
+        $.post('@Url.Action("AddBorrowsToUser","Borrow")', formData, function (data, status) {
+            alert(data.isDone);
+            alert(status);
+        }).done(function () {
+            alert("done");
+        }).error(function()
+        {
+            alert("error");
+        })
+    })
     $(document).on("click", ("#AddBorrow"), function showAddNewBorrowView(e) {
         var url = '@Url.Action("AddNewBorrow", "Borrow")';
         $.get(url, function (data) {
@@ -109,36 +145,37 @@
         })
     })
     $(document).on("click", ("#rem-btn"), function removeBorrowDropDown(e) {
-        debugger;
         var lastDD = lastDropDown();
+        removeLastDropDownId();
         var dropDownToRemove = $(lastDD).data("kendoDropDownList");
         var book = { Title: dropDownToRemove.text(), BookId: dropDownToRemove.value() };
         dropDownToRemove.wrapper.hide();
-
-        removeLastDropDownId();
+        debugger;
         unmarkSelectedBook(book);
         addToAllDD(book, lastDD);
+        var nextLastDD = lastDropDown();
+        if (nextLastDD == "stop") {
+            $("#rem-btn").attr("disabled", true);
+        }
     })
     $(document).on("click", ("#addNext"), function addNextBorrowDropDownList(e) {
-       // var dropdownlist = "<div class=\"addDDdiv\">" + "<input id=" + "\"dropdownlist" + TempId + "\"/>" + "<input id=\"rem-btn\"" + "type=\"button\" value=\"Remove\"/>" + "</div>";
-        var dropdownlist = "<div class=\"addDDdiv\">" + "<input id=" + "\"dropdownlist" + TempId + "\"/>"+"</div>";
+
+        var dropdownlist = "<div class=\"addDDdiv\">" + "<input id=" + "\"dropdownlist" + TempId + "\"/>" + "</div>";
         var newdropDownId = "#dropdownlist" + TempId;
         $("#dropDownDiv").append(dropdownlist);
-     
         addDropDownList(TempId);
         TempId++;
     })
     function dropDownChange (e)
     {
-        debugger;
-        //addObjectToDropDown(indexToAdd, e.sender)
         var currentDropDownId = "#"+e.sender.element.context.id;
-        
+        var book;
         addToAllDD(indexToAdd, currentDropDownId);
         unmarkSelectedBook(indexToAdd);
         bookToRemoveId = e.sender.value();
+        book = { Title: e.sender.text(),BookId:e.sender.value()};
         removeBookFromAllDD(bookToRemoveId, currentDropDownId);
-        markSelectedBook(bookToRemoveId);
+        markSelectedBook(book);
         
     }
     function dropDownOpen(e)
@@ -153,7 +190,6 @@
 
     function addObjectToDropDown(book, dropDownId)
     {
-        debugger;
         var values = [];
         var selectedBooks = [];
         var dd = $(dropDownId).data("kendoDropDownList");
@@ -223,7 +259,6 @@
         var length = allDropDownId.length;
         var currentElementId = dropDownId;
         for (var i = 0; i < length; i++) {
-            debugger;
             if (allDropDownId[i] != currentElementId) {
                 var selectedDropDown = allDropDownId[i];
                 addObjectToDropDown(objectToAdd, selectedDropDown);

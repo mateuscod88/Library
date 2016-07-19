@@ -35,7 +35,7 @@ namespace WebModelServices.BorrowModel
         {
             BorrowsViewModel borrowsViewModel = new BorrowsViewModel();
             var selectedBorrows = from user in _context.User
-                                  join borrow in _context.Borrow on user.UserId equals borrow.UserId
+                                  join borrow in _context.Borrows on user.UserId equals borrow.UserId
                                   where borrow.IsReturned == false
                                   join book in _context.Books on borrow.BookId equals book.BookId
                                   select new
@@ -118,6 +118,44 @@ namespace WebModelServices.BorrowModel
             }
 
             return allBooks;
+        }
+        public void SaveAllBorrowsToUser(BorrowsToSaveModel borrowsToSaveModel)
+        {
+           
+            //    foreach(var borrow in borrowsToSaveModel.Borrows)
+            //    {
+            //        var todayTime = System.DateTime.Now;
+                
+            //        _context.Borrows.Add(new Borrow
+            //        {
+            //            BookId = borrow.BookId,
+            //            UserId = borrowsToSaveModel.User.UserId,
+            //            FromDate = todayTime,
+            //            ToDate = todayTime.AddMonths(1),
+            //            IsReturned = false
+
+            //        });
+
+
+                
+            //}
+
+            using (_context)
+            {
+                var todayTime = System.DateTime.Now;
+                _context.Borrows.Add(new Borrow
+                {
+                    BookId = 18,
+                    UserId = 2,
+                    FromDate = todayTime,
+                    ToDate = todayTime.AddMonths(1),
+                    IsReturned = false
+
+                });
+                _context.SaveChanges();
+            }
+
+
         }
     }
 }

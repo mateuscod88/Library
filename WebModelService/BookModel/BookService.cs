@@ -145,7 +145,7 @@ namespace WebModelServices.BookModel
                         ReleaseDate =   m.ReleaseDate,
                         BookId = m.BookId
                     }).SingleOrDefault();
-                var borrowsHistory = (_context.Borrow.Where(m => m.BookId == bookId)
+                var borrowsHistory = (_context.Borrows.Where(m => m.BookId == bookId)
                     .Select(borrow => new BookBorrowHistoryViewModel
                     {
                         FromDate = borrow.FromDate,
@@ -153,7 +153,7 @@ namespace WebModelServices.BookModel
                         IsReturned = borrow.IsReturned
                     })).ToList();
 
-                selectedBook.IsActive = _context.Borrow.Any(m => m.IsReturned && m.BookId == bookId);
+                selectedBook.IsActive = _context.Borrows.Any(m => m.IsReturned && m.BookId == bookId);
                 
                 BookDetailsViewModel bookDetailsViewModel = new BookDetailsViewModel();
                 bookDetailsViewModel.BookDetails = selectedBook;

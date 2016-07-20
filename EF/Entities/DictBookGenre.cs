@@ -12,7 +12,7 @@ namespace EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DictBookGenre()
         {
-            Books = new HashSet<Book>();
+            Book = new HashSet<Book>();
         }
 
         [Key]
@@ -23,6 +23,6 @@ namespace EF
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Book { get; set; }
     }
 }

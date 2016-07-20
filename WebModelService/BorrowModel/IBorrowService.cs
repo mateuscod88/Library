@@ -11,7 +11,9 @@ namespace WebModelServices.BorrowModel
     {
         IList<UsersAddBorrowViewModel> GetAllUsers();
         BorrowsViewModel GetBorrowListViewModel();
-        IList<BooksAddBorrowViewModel> GetBooksAndRemoveRedudant(int bookId);
         void SaveAllBorrowsToUser(BorrowsToSaveModel borrowsToSaveModel);
+        IList<UserWithBorrowsViewModel> GetUsersWithBorrows();
+        void ReturnBook(int borrowId);
+        ReturnBookFromUserViewModel GetBorrowedBooksFromUser(int userId);
     }
 }

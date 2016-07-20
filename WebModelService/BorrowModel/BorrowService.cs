@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebModelServices.BorrowModel.ViewModel;
+using WebModelServices.UserModel.contracts.DTO;
 
 namespace WebModelServices.BorrowModel
 {
@@ -29,7 +30,7 @@ namespace WebModelServices.BorrowModel
         public BorrowService()
         {
             _context = new BookLibraryEF();
-            
+
         }
         public BorrowsViewModel GetBorrowListViewModel()
         {
@@ -49,30 +50,42 @@ namespace WebModelServices.BorrowModel
                                       LastName = user.LastName,
                                       UserId = user.UserId,
                                       FromDate = borrow.FromDate,
-                                      ToDate = borrow.ToDate
+                                      ToDate = borrow.ToDate,
+                                      BorrowId = borrow.BorrowId
 
-                                   };
-            foreach(var borrow in selectedBorrows)
+                                  };
+            foreach (var borrow in selectedBorrows)
             {
 
                 BorrowedBookViewModel borrowedBookViewModel = new BorrowedBookViewModel();
-                UserWithBorrowsViewModel userWithBorrowsViewModel = new UserWithBorrowsViewModel();
                 borrowedBookViewModel.BookId = borrow.BookId;
                 borrowedBookViewModel.Author = borrow.Author;
                 borrowedBookViewModel.Title = borrow.Title;
                 borrowedBookViewModel.Count = borrow.Count;
                 borrowedBookViewModel.ISBN = borrow.ISBN;
-                borrowedBookViewModel.UserName = borrow.FirstName +" "+ borrow.LastName;
+                borrowedBookViewModel.UserName = borrow.FirstName + " " + borrow.LastName;
                 borrowedBookViewModel.FromDate = borrow.FromDate;
                 borrowedBookViewModel.ToDate = borrow.ToDate;
-                userWithBorrowsViewModel.BookName = borrow.Title;
-                userWithBorrowsViewModel.FirstName = borrow.FirstName;
-                userWithBorrowsViewModel.LastName = borrow.LastName;
-                userWithBorrowsViewModel.UserId = borrow.UserId;
+                borrowedBookViewModel.BorrowId = borrow.BorrowId;
                 borrowsViewModel.BorrowedBooks.Add(borrowedBookViewModel);
-                borrowsViewModel.UserWithBorrows.Add(userWithBorrowsViewModel);
             }
             return borrowsViewModel;
+        }
+        public IList<UserWithBorrowsViewModel> GetUsersWithBorrows()
+        {
+            List<UserWithBorrowsViewModel> usersViewModel = new List<UserWithBorrowsViewModel>();
+            var usersWithBorrows = (from user in _context.User
+                                    join borrow in _context.Borrows on user.UserId equals borrow.UserId
+                                    where borrow.IsReturned == false
+                                    group user by user.UserId into usery
+                                    select new UserWithBorrowsViewModel
+                                    {
+                                        FirstName = usery.FirstOrDefault().FirstName,
+                                        LastName = usery.FirstOrDefault().LastName,
+                                        UserId = usery.FirstOrDefault().UserId
+                                    }).ToList();
+            
+            return usersWithBorrows;
         }
         public IList<UsersAddBorrowViewModel> GetAllUsers()
         {
@@ -87,6 +100,7 @@ namespace WebModelServices.BorrowModel
         public IList<BooksAddBorrowViewModel> GetAllBooks()
         {
             var allBooks = _context.Books
+                                   .Where(m=> m.Count > m.Borrow.Count(c => c.IsReturned == false))
                                    .Select(m => new BooksAddBorrowViewModel
                                    {
                                        BookId = m.BookId,
@@ -94,68 +108,96 @@ namespace WebModelServices.BorrowModel
                                    }).ToList();
             return allBooks;
         }
-        public IList<BooksAddBorrowViewModel> GetBooksAndRemoveRedudant(int bookId)
-        {
-            
-            var allBooks = _context.Books
-                                   .Select(m => new BooksAddBorrowViewModel
-                                   {
-                                       BookId = m.BookId,
-                                       Title = m.Title
-                                   }).ToList();
-            if(SelectedBooks.Any(m => m == bookId) || bookId == 1)
-            {
-                SelectedBooks.Clear();
-            }
-            if(allBooks.Any(m=> m.BookId == bookId))
-            {
-                SelectedBooks.Add(bookId);
-            }
-            foreach(var book in SelectedBooks)
-            {
-                var bookToDelete = allBooks.SingleOrDefault(m=> m.BookId == book);
-                allBooks.Remove(bookToDelete);
-            }
-
-            return allBooks;
-        }
+    
         public void SaveAllBorrowsToUser(BorrowsToSaveModel borrowsToSaveModel)
         {
-           
-            //    foreach(var borrow in borrowsToSaveModel.Borrows)
-            //    {
-            //        var todayTime = System.DateTime.Now;
-                
-            //        _context.Borrows.Add(new Borrow
-            //        {
-            //            BookId = borrow.BookId,
-            //            UserId = borrowsToSaveModel.User.UserId,
-            //            FromDate = todayTime,
-            //            ToDate = todayTime.AddMonths(1),
-            //            IsReturned = false
-
-            //        });
-
-
-                
-            //}
-
             using (_context)
             {
-                var todayTime = System.DateTime.Now;
-                _context.Borrows.Add(new Borrow
-                {
-                    BookId = 18,
-                    UserId = 2,
-                    FromDate = todayTime,
-                    ToDate = todayTime.AddMonths(1),
-                    IsReturned = false
 
-                });
+
+                foreach (var borrow in borrowsToSaveModel.Borrows)
+                {
+                    var todayTime = System.DateTime.Now;
+
+                    _context.Borrows.Add(new Borrow
+                    {
+                        BookId = borrow.BookId,
+                        UserId = borrowsToSaveModel.User.UserId,
+                        FromDate = todayTime,
+                        ToDate = todayTime.AddMonths(1),
+                        IsReturned = false
+
+                    });
+                   
+                }
                 _context.SaveChanges();
             }
-
-
         }
-    }
+        public void ReturnBook(int borrowId)
+        {
+            using (_context)
+            {
+                var borrow = _context.Borrows.Single(x => x.BorrowId == borrowId);
+                borrow.IsReturned = true;
+                _context.SaveChanges();
+            }
+        }
+        public void ReturnBookFromUser(ReturnBookFromUserViewModel returnedBooksFromUser)
+        {
+            using (_context)
+            {
+                var userBorrows = (from borrow in _context.Borrows
+                                   where borrow.UserId == returnedBooksFromUser.UserWithBorrowsViewModel.UserId
+                                   where borrow.IsReturned == false
+                                   select borrow).ToList();
+                
+                foreach (var books in returnedBooksFromUser.BorrowedBooksViewModel)
+                {
+                    if(books.iisActive == true)
+                    {
+                        userBorrows.FirstOrDefault(m => m.BorrowId == books.BorrowId).IsReturned = true;
+                    }
+                }
+                _context.SaveChanges();
+            }
+        }
+        public ReturnBookFromUserViewModel GetBorrowedBooksFromUser(int userId)
+        {
+            ReturnBookFromUserViewModel returnBookFromUserViewModel = new ReturnBookFromUserViewModel();
+
+            var selectedBorrows = from user in _context.User
+                                  join borrow in _context.Borrows on user.UserId equals borrow.UserId
+                                  where borrow.IsReturned == false && borrow.UserId == userId
+                                  join book in _context.Books on borrow.BookId equals book.BookId
+                                  select new 
+                                  {
+                                      UserId = user.UserId,
+                                      FirstName = user.FirstName,
+                                      LastName = user.LastName,
+                                      BorroweId = borrow.BorrowId,
+                                      Author = book.Author,
+                                      Title = book.Title,
+                                      BookId = book.BookId
+
+                                  };
+            foreach (var borrow in selectedBorrows)
+            {
+                BorrowedBookViewModel borrowedBookViewModel = new BorrowedBookViewModel();
+                borrowedBookViewModel.BorrowId = borrow.BorroweId;
+                borrowedBookViewModel.BookId = borrow.BookId;
+                borrowedBookViewModel.Author = borrow.Author;
+                borrowedBookViewModel.Title = borrow.Title;
+                returnBookFromUserViewModel.BorrowedBooksViewModel.Add(borrowedBookViewModel);
+            }
+            var currentUser = selectedBorrows.FirstOrDefault();
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.FirstName = currentUser.FirstName;
+            userViewModel.LastName = currentUser.LastName;
+            userViewModel.UserId = currentUser.UserId;
+            returnBookFromUserViewModel.UserWithBorrowsViewModel = userViewModel;
+
+            return returnBookFromUserViewModel;
+        }
+
+    }  
 }

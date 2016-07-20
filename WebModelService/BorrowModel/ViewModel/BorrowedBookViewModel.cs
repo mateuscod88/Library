@@ -11,7 +11,7 @@ namespace WebModelServices.BorrowModel.ViewModel
     {
         public int BookId { get; set; }
 
-        
+        public int BorrowId { get; set; }
         [Required]
         public string Author { get; set; }
 
@@ -28,5 +28,6 @@ namespace WebModelServices.BorrowModel.ViewModel
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
+        public bool iisActive { get; set; }
     }
 }

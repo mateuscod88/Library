@@ -9,8 +9,6 @@ namespace EF
     [Table("Borrow")]
     public partial class Borrow
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        
         public int BorrowId { get; set; }
 
         public int UserId { get; set; }

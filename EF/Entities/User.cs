@@ -12,7 +12,7 @@ namespace EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            Borrows = new HashSet<Borrow>();
+            Borrow = new HashSet<Borrow>();
         }
 
         public int UserId { get; set; }
@@ -34,13 +34,13 @@ namespace EF
 
         public DateTime AddDate { get; set; }
 
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         public bool IsActive { get; set; }
 
         public DateTime BirthDate { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Borrow> Borrows { get; set; }
+        public virtual ICollection<Borrow> Borrow { get; set; }
     }
 }

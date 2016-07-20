@@ -1,0 +1,57 @@
+﻿@model WebModelServices.BorrowModel.ViewModel.ReturnBookFromUserViewModel
+
+@{
+    ViewBag.Title = "ReturnBooksByUser";
+}
+
+@using (Html.BeginForm("ReturnBooksByUser", "Borrow"))
+{
+
+    
+            @Html.HiddenFor(model => model.UserWithBorrowsViewModel.UserId)
+            @Html.LabelFor(model => model.UserWithBorrowsViewModel.FirstName)
+            @Html.DisplayTextFor(model => model.UserWithBorrowsViewModel.FirstName)
+            @Html.HiddenFor(model => model.UserWithBorrowsViewModel.FirstName)
+            <br />
+            @Html.LabelFor(model => model.UserWithBorrowsViewModel.LastName)
+            @Html.DisplayTextFor(model => model.UserWithBorrowsViewModel.LastName)
+            @Html.HiddenFor(model => model.UserWithBorrowsViewModel.LastName)    
+            <br />
+            
+            <br />
+            <br />
+            @:Books List
+            <br />
+            @Html.Raw("-----------------------------------")
+
+            <br />
+            @Html.Raw("<ul>")
+                for (var i = 0; i<Model.BorrowedBooksViewModel.Count; i++)
+                {
+                    <li>
+                        @Html.LabelFor(model => Model.BorrowedBooksViewModel[i].Title)
+                        @Html.DisplayTextFor(model => Model.BorrowedBooksViewModel[i].Title)
+                        @Html.HiddenFor(model => Model.BorrowedBooksViewModel[i].Title)
+                        @Html.LabelFor(model => Model.BorrowedBooksViewModel[i].Author)
+                        @Html.DisplayTextFor(model => Model.BorrowedBooksViewModel[i].Author)
+                        @Html.HiddenFor(model => Model.BorrowedBooksViewModel[i].Author)
+                        @Html.HiddenFor(model => Model.BorrowedBooksViewModel[i].BorrowId)
+                        @Html.CheckBoxFor(model => Model.BorrowedBooksViewModel[i].iisActive)
+                    </li>
+                }
+            @Html.Raw("</ul>")
+
+
+
+    <p>
+        <input type="submit" value="Return" />
+        @Html.ActionLink("Index", "Borrow")
+    </p>
+
+}
+
+
+
+<script>
+
+</script>

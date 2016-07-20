@@ -8,9 +8,8 @@ namespace EF
     public partial class BookLibraryEF : DbContext
     {
         public BookLibraryEF()
-            : base("name=BookLibraryEF")
+            : base("name=BookLibraryContext")
         {
-            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<Book> Books { get; set; }
@@ -21,17 +20,17 @@ namespace EF
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>()
-                .HasMany(e => e.Borrows)
+                .HasMany(e => e.Borrow)
                 .WithRequired(e => e.Book)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<DictBookGenre>()
-                .HasMany(e => e.Books)
+                .HasMany(e => e.Book)
                 .WithRequired(e => e.DictBookGenre)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
-                .HasMany(e => e.Borrows)
+                .HasMany(e => e.Borrow)
                 .WithRequired(e => e.User)
                 .WillCascadeOnDelete(false);
         }

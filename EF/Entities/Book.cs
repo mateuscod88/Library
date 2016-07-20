@@ -12,7 +12,7 @@ namespace EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Book()
         {
-            Borrows = new HashSet<Borrow>();
+            Borrow = new HashSet<Borrow>();
         }
 
         public int BookId { get; set; }
@@ -27,6 +27,7 @@ namespace EF
 
         public DateTime? ReleaseDate { get; set; }
 
+        [Required]
         [StringLength(50)]
         public string ISBN { get; set; }
 
@@ -41,6 +42,6 @@ namespace EF
         public virtual DictBookGenre DictBookGenre { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Borrow> Borrows { get; set; }
+        public virtual ICollection<Borrow> Borrow { get; set; }
     }
 }

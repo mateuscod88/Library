@@ -26,7 +26,7 @@ namespace LibraryMVC.Controllers
         }
         public ActionResult GetUsersWithBorrows([DataSourceRequest]DataSourceRequest request)
         {
-            return Json(_borrowService.GetBorrowListViewModel().UserWithBorrows.ToDataSourceResult(request));
+            return Json(_borrowService.GetUsersWithBorrows().ToDataSourceResult(request));
         }
         
 
@@ -68,6 +68,25 @@ namespace LibraryMVC.Controllers
         {
             _borrowService.SaveAllBorrowsToUser(borrowsToSaveModel);
             return Json(new { isDone = true });
+        }
+        [HttpPost]
+        public JsonResult ReturnBook(int id)
+        {
+            _borrowService.ReturnBook(id);
+            return Json(new { isDone = true });
+        }
+
+        [HttpGet]
+        public ActionResult ReturnBooksByUserViewModel(int id)
+        {
+            var returnBookByUserViewModel = _borrowService.GetBorrowedBooksFromUser(id);
+            return View("ReturnBooksByUser",returnBookByUserViewModel);
+        }
+        [HttpPost]
+        public ActionResult ReturnBooksByUser(ReturnBookFromUserViewModel returnBookFromUserViewModel)
+        {
+            _borrowService.ReturnBookFromUser(returnBookFromUserViewModel);
+            return RedirectToAction("Index", "Borrow");
         }
     }
 }

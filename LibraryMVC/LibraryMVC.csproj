@@ -989,6 +989,7 @@
     <Content Include="Views\Shared\MyTemplate\CollectionGrid.cshtml" />
     <Content Include="Views\Borrow\Index.cshtml" />
     <Content Include="Views\Borrow\AddNewBorrow.cshtml" />
+    <Content Include="Views\Borrow\ReturnBooksByUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -27,7 +27,7 @@ namespace WebModelServices.UserModel.contracts.DTO
         [Required]
         public DateTime AddDate { get; set; }
         [Required]
-        public DateTime Modified { get; set; }
+        public DateTime? Modified { get; set; }
         [Required]
         public int BooksBorrowed { get; set; }
         [Required]

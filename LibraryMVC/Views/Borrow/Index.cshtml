@@ -1,13 +1,14 @@
 ﻿@model IList<WebModelServices.BorrowModel.ViewModel.BorrowsViewModel>
 
 @(Html.Kendo().Grid<WebModelServices.BorrowModel.ViewModel.UserWithBorrowsViewModel>()
-        .Name("grid")
+        .Name("gridUsers")
         .Columns(columns =>
         {
             columns.Bound(c => c.FirstName)
               .Width(240);
             columns.Bound(c => c.LastName);
-            columns.Bound(c => c.BookName);
+            columns.Command(command => command.Custom("Borrows").Click("showUserBorrowsView")).Width(150);
+
         })
         .HtmlAttributes(new { style = "height: 550px;" })
         .Scrollable()
@@ -25,7 +26,7 @@
 )
 
 @(Html.Kendo().Grid<WebModelServices.BorrowModel.ViewModel.BorrowedBookViewModel>()
-        .Name("grid1")
+        .Name("gridBooks")
         .Columns(columns =>
         {
             columns.Bound(c => c.Title)
@@ -35,6 +36,7 @@
             columns.Bound(c => c.ToDate);
             columns.Bound(c => c.ISBN);
             columns.Bound(c => c.UserName);
+            columns.Command(command => command.Custom("Return").Click("returnBook")).Width(150);
         })
         .HtmlAttributes(new { style = "height: 550px;" })
         .Scrollable()
@@ -67,22 +69,7 @@
     
     //.LoadContentFrom("AddBook", "Book")
 )
-@*@(Html.Kendo().Window().Name("EditBook")
-    .Title("Edit Book")
-    .Visible(false)
-    .Modal(true)
-    .Draggable(true)
-    .Width(300)
-//.LoadContentFrom("EditBook", "Book")
-)
-@(Html.Kendo().Window().Name("BookDetails")
-    .Title("Book Details")
-    .Visible(false)
-    .Modal(true)
-    .Draggable(true)
-    .Width(300)
-//.LoadContentFrom("BookDetails", "Book")
-)*@
+
 
 <script type="text/x-kendo-template" id="template">
     <div id="d">
@@ -92,8 +79,37 @@
 </script>
 
 <script type="text/javascript">
-
+    function showUserBorrowsView(e)
+    {
+        debugger;
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var userId = dataItem.UserId;
+        var url = '@Url.Action("ReturnBooksByUserViewModel", "Borrow")' + "/" + userId;
+        location.replace(url);
+    }
+    function returnBook(e)
+    {
+        debugger;
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var borrowId = dataItem.BorrowId;
+        var url = '@Url.Action("ReturnBook", "Borrow")' + "/" + borrowId;
+        $.post(url, null, function (data, status) {
+            upateAndRefreshGrid("#gridBooks");
+            upateAndRefreshGrid("#gridUsers");
+        })
+        
+    }
+    function upateAndRefreshGrid(id)
+    {
+        $(id).data("kendoGrid").dataSource.read();
+        $(id).data("kendoGrid").refresh();
+    }
+    
     function onCloseAddNewBorrow()
+    {
+        cleanPopUpContent();
+    }
+    function cleanPopUpContent()
     {
         var emptyString = "";
         $("#Testowy").empty();
@@ -127,11 +143,15 @@
         //var formData = getAllToSave();
         var formData = getAllToSave();
         $.post('@Url.Action("AddBorrowsToUser","Borrow")', formData, function (data, status) {
-            alert(data.isDone);
-            alert(status);
+            
         }).done(function () {
-            alert("done");
-        }).error(function()
+            debugger;
+            upateAndRefreshGrid("#gridBooks");
+            upateAndRefreshGrid("#gridUsers");
+            var wnd = $("#AddNewBorrow").data("kendoWindow").close()
+            cleanPopUpContent();
+            
+        }).error(function ()
         {
             alert("error");
         })

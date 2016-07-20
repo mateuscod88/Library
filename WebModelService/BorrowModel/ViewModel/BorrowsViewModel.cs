@@ -11,10 +11,8 @@ namespace WebModelServices.BorrowModel.ViewModel
         public BorrowsViewModel()
         {
             BorrowedBooks = new List<BorrowedBookViewModel>();
-            UserWithBorrows = new List<UserWithBorrowsViewModel>();
         }
         public IList<BorrowedBookViewModel> BorrowedBooks { get; set; }
-        public IList<UserWithBorrowsViewModel> UserWithBorrows { get; set; }
 
     }
 }

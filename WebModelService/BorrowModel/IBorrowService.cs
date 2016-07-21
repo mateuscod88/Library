@@ -7,7 +7,7 @@ using WebModelServices.BorrowModel.ViewModel;
 
 namespace WebModelServices.BorrowModel
 {
-     interface IBorrowService
+    public interface IBorrowService
     {
         IList<UsersAddBorrowViewModel> GetAllUsers();
         BorrowsViewModel GetBorrowListViewModel();
@@ -15,5 +15,8 @@ namespace WebModelServices.BorrowModel
         IList<UserWithBorrowsViewModel> GetUsersWithBorrows();
         void ReturnBook(int borrowId);
         ReturnBookFromUserViewModel GetBorrowedBooksFromUser(int userId);
+        IList<BooksAddBorrowViewModel> GetAllBooks();
+        void ReturnBookFromUser(ReturnBookFromUserViewModel returnedBooksFromUser);
+
     }
 }

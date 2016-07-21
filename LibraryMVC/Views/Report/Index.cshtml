@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@{ Html.RenderAction("UserWithFilter", "Report");}
+
+<script>
+    $(document).ready(
+        function()
+        {
+            debugger;
+            alert("ready");
+            
+                        
+
+        })
+    function LastNameFilter(element)
+    {
+        element.kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: "@Url.Action("FilterMenuCustomization_Titles")"
+            }
+        }
+        });
+    }
+</script>

@@ -10,6 +10,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using WebModelServices.BookModel;
+using WebModelServices.BorrowModel;
+using WebModelServices.ReportsModel;
+using WebModelServices.ReportsModel.NewFolder1;
 using WebModelServices.UserModel.contracts.DTO;
 using WebModelServices.UserModel.contracts.Interface;
 
@@ -28,6 +31,13 @@ namespace LibraryMVC
             builder.RegisterType<BookService>()
                 .As<IBookService>()
                 .InstancePerDependency();
+            builder.RegisterType<BorrowService>()
+                .As<IBorrowService>()
+                .InstancePerDependency();
+            builder.RegisterType<ReportService>()
+                .As<IReportService>()
+                .InstancePerDependency();
+
             // Register your MVC controllers.
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 

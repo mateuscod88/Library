@@ -8,7 +8,6 @@
               .Width(240);
             columns.Bound(c => c.LastName);
             columns.Command(command => command.Custom("Borrows").Click("showUserBorrowsView")).Width(150);
-
         })
         .HtmlAttributes(new { style = "height: 550px;" })
         .Scrollable()
@@ -56,8 +55,6 @@
             .Name("AddBorrow")
             .Tag("a")
             .Content("Add New Borrow"))
-@*<button type="button" class="myButton" onclick="showAddView()">Add Borrow</button>
-<p id="myPar"> button on </p>*@
 
 @(Html.Kendo().Window().Name("AddNewBorrow")
     .Title("Add Book")
@@ -66,8 +63,6 @@
     .Draggable(true)
     .Width(300)
     .Events(e => e.Close("onCloseAddNewBorrow"))
-    
-    //.LoadContentFrom("AddBook", "Book")
 )
 
 

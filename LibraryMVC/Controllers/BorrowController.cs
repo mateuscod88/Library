@@ -15,10 +15,10 @@ namespace LibraryMVC.Controllers
     {
         // GET: Borrow
         
-        private BorrowService _borrowService;
-        public BorrowController()
+        private IBorrowService _borrowService;
+        public BorrowController(IBorrowService borrowService)
         {
-            _borrowService = new BorrowService();
+            _borrowService = borrowService;
         }
         public ActionResult Index()
         {
@@ -38,21 +38,7 @@ namespace LibraryMVC.Controllers
         {
             return PartialView("AddNewBorrow");
         }
-       // [HttpPost]
-        //public ActionResult AddNewBorrow(NewBorrowViewModel newBorrowViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        NewBorrowViewModel borrowViewModel = new NewBorrowViewModel();
-        //        _borrowService.AddNewBorrow(newBorrowViewModel);
-        //        return Json(new { isDone = true });
-        //    }
-        //    else
-        //    {
-        //        return PartialView("AddBook", newBorrowViewModel);
-        //    }
-
-        //}
+      
         public JsonResult GetUsers()
         {
             IList<UsersAddBorrowViewModel> userAddBorrowViewModel = _borrowService.GetAllUsers();

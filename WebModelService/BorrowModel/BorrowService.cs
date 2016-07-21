@@ -113,8 +113,6 @@ namespace WebModelServices.BorrowModel
         {
             using (_context)
             {
-
-
                 foreach (var borrow in borrowsToSaveModel.Borrows)
                 {
                     var todayTime = System.DateTime.Now;

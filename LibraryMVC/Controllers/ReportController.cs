@@ -35,5 +35,36 @@ namespace LibraryMVC.Controllers
             var users = _reportService.GetUserByFilterCriteria();
             return Json(users.ToDataSourceResult(request));
         }
+        [HttpGet]
+        public JsonResult FilterLastName()
+        {
+            var LastName = "Zdzisiek";
+            return Json(LastName, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public PartialViewResult BookWithFilter()
+        {
+
+            return PartialView("BookWithFilter");
+        }
+        [HttpPost]
+        public JsonResult FilterBooks([DataSourceRequest]DataSourceRequest request)
+        {
+            var books = _reportService.GetBooksByFilterCriteria();
+            return Json(books.ToDataSourceResult(request));
+        }
+        [HttpGet]
+        public JsonResult GetDictGenre()
+        {
+           
+            return Json(_reportService.GetDictGenre(), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetTitle(BookTitleModel bookTitleModel)
+       {
+            
+            return Json(_reportService.GetTitle(bookTitleModel.Title), JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

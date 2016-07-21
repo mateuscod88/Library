@@ -99,7 +99,8 @@
                 newDataForDD.push(book);
             }
         }
-        
+        if (newDataForDD.length == 1)
+            $("#addNext").attr("disabled", true);
         return newDataForDD;
     }
     function markSelectedBook(book)
@@ -154,6 +155,7 @@
                 var selectedBook = { Title: dropDown1.text(), BookId: dropDown1.value() };
                 markSelectedBook(selectedBook);
                 newResult = prepareDataForDD(result);
+                
             }
             else if (selectedBooks.length > 0)
             {

@@ -169,6 +169,7 @@
         unmarkSelectedBook(book);
         addToAllDD(book, lastDD);
         var nextLastDD = lastDropDown();
+        $("#addNext").removeAttr("disabled");
         if (nextLastDD == "stop") {
             $("#rem-btn").attr("disabled", true);
         }

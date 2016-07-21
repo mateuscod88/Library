@@ -6,6 +6,9 @@
 <h2>Index</h2>
 
 @{ Html.RenderAction("UserWithFilter", "Report");}
+@{ Html.RenderAction("BookWithFilter", "Report");}
+@{ Html.RenderPartial("BookFilter", "Report");}
+
 
 <script>
     $(document).ready(
@@ -17,14 +20,27 @@
                         
 
         })
+    function onAdditionalData() {
+        debugger;
+        var newTitle = { "Title": $("#Title").val() }
+        return newTitle;
+           
+        };
+    
     function LastNameFilter(element)
     {
-        element.kendoAutoComplete({
-            dataSource: {
-                transport: {
-                    read: "@Url.Action("FilterMenuCustomization_Titles")"
-            }
-        }
-        });
+        var url = '@Url.Action("FilterLastName","Report")';
+            element.kendoAutoComplete({
+                dataTextField: "LastName",
+                filter: "startswith",
+                minLength: 3,
+                dataSource: {
+                    type: "odata",
+                    serverFiltering: true,
+                    transport: {
+                        read: url
+                    }
+                }
+            });
     }
 </script>

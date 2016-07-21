@@ -9,6 +9,9 @@ namespace WebModelServices.BorrowModel.ViewModel
 {
     public class BorrowedBookViewModel
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public int BookId { get; set; }
 
         public int BorrowId { get; set; }
@@ -24,10 +27,18 @@ namespace WebModelServices.BorrowModel.ViewModel
 
         public int Count { get; set; }
 
-        public string UserName { get; set; }
+        public string UserName {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }
         public bool iisActive { get; set; }
-    }
+
+        }
+    
+
 }

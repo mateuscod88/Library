@@ -993,6 +993,8 @@
     <Content Include="Views\Borrow\ReturnBooksByUser.cshtml" />
     <Content Include="Views\Report\UsersWithFilter.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\BookWithFilter.cshtml" />
+    <Content Include="Views\Report\BookFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

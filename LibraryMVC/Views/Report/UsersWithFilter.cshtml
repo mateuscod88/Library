@@ -4,9 +4,10 @@
         .Name("UserWithFilterGrid")
         .Columns(columns =>
         {
-            columns.Bound(c => c.FirstName)
+            columns.Bound(c => c.FirstName).Filterable(false)
               .Width(240);
             columns.Bound(c => c.LastName).Filterable(filterable => filterable.UI("LastNameFilter"));
+            columns.Bound(c => c.BorrowedBook).Width(240).Filterable(false);
 
         })
         .HtmlAttributes(new { style = "height: 500px;" })
@@ -15,6 +16,7 @@
             .Read(read => read.Action("FilterUserss", "Report"))
             .PageSize(20))
         .Scrollable()
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
         .Groupable()
         .Sortable()
         .Pageable(pageable => pageable

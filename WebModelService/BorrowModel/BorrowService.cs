@@ -35,40 +35,24 @@ namespace WebModelServices.BorrowModel
         public BorrowsViewModel GetBorrowListViewModel()
         {
             BorrowsViewModel borrowsViewModel = new BorrowsViewModel();
-            var selectedBorrows = from user in _context.User
-                                  join borrow in _context.Borrows on user.UserId equals borrow.UserId
-                                  where borrow.IsReturned == false
-                                  join book in _context.Books on borrow.BookId equals book.BookId
-                                  select new
-                                  {
-                                      Author = book.Author,
-                                      Title = book.Title,
-                                      ISBN = book.ISBN,
-                                      Count = book.Count,
-                                      BookId = book.BookId,
-                                      FirstName = user.FirstName,
-                                      LastName = user.LastName,
-                                      UserId = user.UserId,
-                                      FromDate = borrow.FromDate,
-                                      ToDate = borrow.ToDate,
-                                      BorrowId = borrow.BorrowId
-
-                                  };
-            foreach (var borrow in selectedBorrows)
-            {
-
-                BorrowedBookViewModel borrowedBookViewModel = new BorrowedBookViewModel();
-                borrowedBookViewModel.BookId = borrow.BookId;
-                borrowedBookViewModel.Author = borrow.Author;
-                borrowedBookViewModel.Title = borrow.Title;
-                borrowedBookViewModel.Count = borrow.Count;
-                borrowedBookViewModel.ISBN = borrow.ISBN;
-                borrowedBookViewModel.UserName = borrow.FirstName + " " + borrow.LastName;
-                borrowedBookViewModel.FromDate = borrow.FromDate;
-                borrowedBookViewModel.ToDate = borrow.ToDate;
-                borrowedBookViewModel.BorrowId = borrow.BorrowId;
-                borrowsViewModel.BorrowedBooks.Add(borrowedBookViewModel);
-            }
+            var selectedBorrows = (from user in _context.User
+                                   join borrow in _context.Borrows on user.UserId equals borrow.UserId
+                                   join book in _context.Books on borrow.BookId equals book.BookId
+                                   where borrow.IsReturned == false
+                                   select new BorrowedBookViewModel()
+                                   {
+                                       Author = book.Author,
+                                       Title = book.Title,
+                                       ISBN = book.ISBN,
+                                       Count = book.Count,
+                                       BookId = book.BookId,
+                                       FirstName = user.FirstName,
+                                       LastName = user.LastName,
+                                       FromDate = borrow.FromDate,
+                                       ToDate = borrow.ToDate,
+                                       BorrowId = borrow.BorrowId,
+                                   }).ToList();
+            borrowsViewModel.BorrowedBooks = selectedBorrows;
             return borrowsViewModel;
         }
         public IList<UserWithBorrowsViewModel> GetUsersWithBorrows()

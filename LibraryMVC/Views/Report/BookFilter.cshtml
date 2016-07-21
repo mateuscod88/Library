@@ -1,0 +1,36 @@
+﻿<h4>Filtr Ksiazek</h4>
+
+@(Html.Kendo().DropDownList()
+          .Name("DictGenre")
+          .DataTextField("Name")
+          .DataValueField("BookGenreId ")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetDictGenre", "Report");
+              });
+          })
+          .HtmlAttributes(new { style = "width: 100%" })
+)
+@(Html.Kendo().AutoComplete()
+          .Name("Title")
+          .DataTextField("Title")
+          .Filter("contains")
+          .MinLength(3)
+          .HtmlAttributes(new { style = "width:100%" })
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetTitle", "Report")
+                      .Data("onAdditionalData");
+              })
+              .ServerFiltering(true);
+          })
+)
+@(Html.Kendo().DatePicker()
+              .Name("datepicker")
+              .Value("10/10/2011")
+              .HtmlAttributes(new { style = "width: 100%" })
+)

@@ -1,0 +1,26 @@
+﻿@model IList<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>
+
+@(Html.Kendo().Grid<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>()
+        .Name("BookWithFilterGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Author).Filterable(false)
+              .Width(240);
+            columns.Bound(c => c.Title).Filterable(false);
+            columns.Bound(c => c.BorrowCount).Width(240).Filterable(false);
+
+        })
+        .HtmlAttributes(new { style = "height: 500px;" })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+            .Read(read => read.Action("FilterBooks", "Report"))
+            .PageSize(20))
+        .Scrollable()
+        .Groupable()
+        .Sortable()
+        .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(10))
+
+)

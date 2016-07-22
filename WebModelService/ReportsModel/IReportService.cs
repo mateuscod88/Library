@@ -10,8 +10,9 @@ namespace WebModelServices.ReportsModel
     public interface IReportService
     {
         IList<UserWithFilterViewModel> GetUserByFilterCriteria();
-        IList<BookWithFilterViewModel> GetBooksByFilterCriteria();
+        IList<BookWithFilterViewModel> GetBooks();
         IList<BookTitleModel> GetTitle(string title);
         IList<DictGenreModel> GetDictGenre();
+        IList<BookWithFilterViewModel> GetBooksByFilterCriteria(FilterDataModel filterDataModel);
     }
 }

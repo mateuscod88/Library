@@ -113,6 +113,7 @@
     <Compile Include="ReportsModel\ViewModel\BookTitleModel.cs" />
     <Compile Include="ReportsModel\ViewModel\BookWithFilterViewModel.cs" />
     <Compile Include="ReportsModel\ViewModel\DictGenreModel.cs" />
+    <Compile Include="ReportsModel\ViewModel\FilterDataModel.cs" />
     <Compile Include="ReportsModel\ViewModel\UserWithFilterViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\BorrowHistoryViewModel.cs" />
     <Compile Include="UserModel\Contracts\ViewModel\DetailsViewModel.cs" />

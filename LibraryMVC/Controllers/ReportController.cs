@@ -45,13 +45,19 @@ namespace LibraryMVC.Controllers
         public PartialViewResult BookWithFilter()
         {
 
-            return PartialView("BookWithFilter");
+            return PartialView("BookWithFilter",_reportService.GetBooks());
         }
         [HttpPost]
-        public JsonResult FilterBooks([DataSourceRequest]DataSourceRequest request)
+        public JsonResult GetBooks([DataSourceRequest]DataSourceRequest request)
         {
-            var books = _reportService.GetBooksByFilterCriteria();
+            var books = _reportService.GetBooks();
             return Json(books.ToDataSourceResult(request));
+        }
+        [HttpGet]
+        public JsonResult GetBooks()
+        {
+            var books = _reportService.GetBooks();
+            return Json(books, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult GetDictGenre()
@@ -65,6 +71,16 @@ namespace LibraryMVC.Controllers
             
             return Json(_reportService.GetTitle(bookTitleModel.Title), JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult FilterBooks(FilterDataModel filterDataModel)
+        {
+            
+            return Json(_reportService.GetBooksByFilterCriteria(filterDataModel), JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult ResetFilterBooks()
+        {
+            return Json(_reportService.GetBooks(), JsonRequestBehavior.AllowGet);
 
+        }
     }
 }

@@ -33,18 +33,19 @@ namespace WebModelServices.ReportsModel.NewFolder1
 
             }
         }
-        public IList<BookWithFilterViewModel> GetBooksByFilterCriteria()
+        public IList<BookWithFilterViewModel> GetBooks()
         {
             var books = (from book in _context.Books
                          orderby book.Borrow.Count descending
                          select new BookWithFilterViewModel
                          {
+                             BookId = book.BookId,
                              Author = book.Author,
                              Title = book.Title,
                              BorrowCount = book.Borrow.Count,
-                             AddDate = book.AddDate,
-                             ReleaseDate = book.ReleaseDate
-                         }).ToList();
+                             AddDate = book.AddDate
+                             
+                             }).ToList();
             return books;
         }
         public IList<DictGenreModel> GetDictGenre()
@@ -61,13 +62,47 @@ namespace WebModelServices.ReportsModel.NewFolder1
         {
 
             var bookTitle = (from book in _context.Books
-                             where (book.Title).StartsWith(title)
+                             where (book.Title).Contains(title)
                              select new BookTitleModel
                              {
                                  BookId = book.BookId,
                                  Title = book.Title
                              }).ToList();
             return bookTitle;
+        }
+        public IList<BookWithFilterViewModel> GetBooksByFilterCriteria(FilterDataModel filterDataModel)
+        {
+
+            var tempBook = (from book in _context.Books select book);
+
+            if (!string.IsNullOrEmpty(filterDataModel.Title))
+            {
+                tempBook = (from book in tempBook where filterDataModel.Title == book.Title select book);
+            }
+            if((filterDataModel.GenreId).HasValue)
+            {
+                tempBook = (from book in tempBook where filterDataModel.GenreId == book.DictBookGenre.BookGenreId select book);
+            }
+            if(filterDataModel.BorrowFrom.HasValue)
+            {
+                tempBook = (from book in tempBook where filterDataModel.BorrowFrom < book.AddDate select book);
+            }
+            if(filterDataModel.BorrowTo.HasValue)
+            {
+                tempBook = (from book in tempBook where filterDataModel.BorrowTo > book.AddDate select book);
+            }
+
+            var filteredBook = (from book in tempBook
+                                orderby book.Borrow.Count descending
+                                select new BookWithFilterViewModel
+                                {
+                                    BookId = book.BookId,
+                                    Author = book.Author,
+                                    Title = book.Title,
+                                    BorrowCount = book.Borrow.Count,
+                                    AddDate = book.AddDate
+                                }).ToList();
+            return filteredBook;
         }
     }
 }

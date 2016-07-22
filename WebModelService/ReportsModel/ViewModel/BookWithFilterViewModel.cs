@@ -16,12 +16,8 @@ namespace WebModelServices.ReportsModel.ViewModel
 
         public string Title { get; set; }
 
-        public DateTime? ReleaseDate { get; set; }
-
-        public int BorrowCount { get; set; }
-
         public DateTime AddDate { get; set; }
 
-        public DateTime? ModifiedDate { get; set; }
+        public int BorrowCount { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
@@ -14,12 +13,84 @@
     $(document).ready(
         function()
         {
+            
+
+            $("#DictGenre").data("kendoDropDownList").value("");
+            $("#datepicker").data("kendoDatePicker").value("");
+            $("#datepicker1").data("kendoDatePicker").value("");
             debugger;
             alert("ready");
-            
-                        
 
         })
+    $(document).on("click", ("#flt-btn"), function () {
+        debugger;
+        var url = '@Url.Action("FilterBooks", "Report")';
+        var GenreId = $("#DictGenre").data("kendoDropDownList").value();
+        var Title = $("#Title").val();
+       
+        var dataPicker = $("#datepicker").data("kendoDatePicker").value();
+        var BorrowFrom = kendo.toString(dataPicker, "MM-dd-yyyy h:mm:ss tt");
+
+        var dataPicker1 = $("#datepicker1").data("kendoDatePicker").value();
+        var BorrowTo = kendo.toString(dataPicker1, "MM-dd-yyyy h:mm:ss tt");
+        var FilterData = {
+            "GenreId": GenreId,
+            "Title": Title,
+            "BorrowFrom": BorrowFrom,
+            "BorrowTo": BorrowTo
+        };
+        $.post(url, FilterData, function (data) {
+            var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
+            debugger;
+            var dt = data;
+           // var date = new Date(parseInt(jsonDate.substr(6)));
+            $.each(data, function (index) {
+               // data[index].AddDate = data[index].AddDate;
+                data[index].AddDate = new Date(parseInt(data[index].AddDate.substr(6)));
+            });
+            //var newData = convertTime(data);
+            //var dataSource = new kendo.data.DataSource(data);
+            bookGrid.dataSource.data(data);
+            bookGrid.refresh();
+        })
+    })
+    function convertTime(dateList)
+    {
+        debugger;
+        for (var i = 0 ; i < dateList.length ; i++)
+        {
+            var d = new Date();
+            var add = dateList[i].AddDate;
+            d.setTime(dateList[i].AddDate);
+            dateList[i].AddDate = d; 
+            
+        }
+        return dateList;
+    }
+    $(document).on("click", ("#rst-btn"), function () {
+            debugger;
+            var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
+            var url = '@Url.Action("GetBooks", "Report")';
+
+            $.get(url,function (data) {
+                var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
+                debugger;
+                $.each(data, function (index) {
+                    // data[index].AddDate = data[index].AddDate;
+                    data[index].AddDate = new Date(parseInt(data[index].AddDate.substr(6)));
+                });
+                bookGrid.dataSource.data(data);
+                bookGrid.refresh();
+            })
+            
+            var autoComplete = $("#Title").data("kendoAutoComplete");
+            $("#datepicker").data("kendoDatePicker").value("");
+            $("#datepicker1").data("kendoDatePicker").value("");
+            $("#DictGenre").data("kendoDropDownList").value("");
+            autoComplete.value("");
+
+        
+    })
     function onAdditionalData() {
         debugger;
         var newTitle = { "Title": $("#Title").val() }

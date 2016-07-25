@@ -19,7 +19,6 @@
             $("#datepicker").data("kendoDatePicker").value("");
             $("#datepicker1").data("kendoDatePicker").value("");
             debugger;
-            alert("ready");
 
         })
     $(document).on("click", ("#flt-btn"), function () {
@@ -76,7 +75,6 @@
                 var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
                 debugger;
                 $.each(data, function (index) {
-                    // data[index].AddDate = data[index].AddDate;
                     data[index].AddDate = new Date(parseInt(data[index].AddDate.substr(6)));
                 });
                 bookGrid.dataSource.data(data);

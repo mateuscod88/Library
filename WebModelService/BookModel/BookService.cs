@@ -13,9 +13,9 @@ namespace WebModelServices.BookModel
     public class BookService : IBookService
     {
         private BookLibraryEF _context;
-        public BookService()
+        public BookService(BookLibraryEF context)
         {
-            _context = new BookLibraryEF();
+            _context = context;
         }
         public IList<BookViewModel> RetriveAll()
         {

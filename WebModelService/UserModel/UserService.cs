@@ -13,19 +13,20 @@ namespace WebModelServices.UserModel.contracts.DTO
 {
     public class UserService : IUserService
     {
-        public UserService()
+        private BookLibraryEF _context;
+        public UserService(BookLibraryEF context)
         {
-
+            _context = context;
         }
 
         public IList<UserViewModel> RetrieveAll()
         {
             //List<UserViewModel> usersDTO = new List<UserViewModel>();
-            using (var context = new BookLibraryEF())
+            using (_context)
             {
-                var users = from user in context.User
+                var users = from user in _context.User
                                 //from borrowShort in context.Borrow.Where(x => x.UserId == user.UserId).DefaultIfEmpty()
-                            join borrow in context.Borrows on user.UserId equals borrow.UserId
+                            join borrow in _context.Borrows on user.UserId equals borrow.UserId
                             into borrowCount
                             from borrow in borrowCount.DefaultIfEmpty().GroupBy(m => user.UserId)
                             select new UserViewModel
@@ -57,26 +58,25 @@ namespace WebModelServices.UserModel.contracts.DTO
             newUser.Phone = user.Phone;
             newUser.ModifiedDate = System.DateTime.Now;
             
-            using (var context = new BookLibraryEF())
+            using (_context)
             {
                 int id = newUser.UserId;
-                context.User.Add(newUser);
-                context.SaveChanges();
+                _context.User.Add(newUser);
+                _context.SaveChanges();
             }
 
         }
         public UserViewModel GetUserById(int userId)
         {
             UserViewModel userViewModel = new UserViewModel();
-            using (var context = new BookLibraryEF())
+            using (_context)
             {
-                var selectedUser = context.User.SingleOrDefault(m => m.UserId == userId);
+                var selectedUser = _context.User.SingleOrDefault(m => m.UserId == userId);
                 userViewModel.UserId = selectedUser.UserId;
                 userViewModel.FirstName = selectedUser.FirstName;
                 userViewModel.LastName = selectedUser.LastName;
                 userViewModel.Email = selectedUser.Email;
                 userViewModel.Phone = selectedUser.Phone;
-                //user.Modified = selectedUser.ModifiedDate.ToString("u");
                 userViewModel.BirthDate = selectedUser.BirthDate;
             }
             return userViewModel;
@@ -85,33 +85,33 @@ namespace WebModelServices.UserModel.contracts.DTO
         {
            if (userViewModel != null)
            { 
-                using (var context = new BookLibraryEF())
+                using (_context)
                 {
-                    var selectedUser = context.User.SingleOrDefault(m => m.UserId == userViewModel.UserId);
+                    var selectedUser = _context.User.SingleOrDefault(m => m.UserId == userViewModel.UserId);
                     selectedUser.FirstName = userViewModel.FirstName;
                     selectedUser.LastName = userViewModel.LastName;
                     selectedUser.Email = userViewModel.Email;
                     selectedUser.Phone = userViewModel.Phone;
                     selectedUser.ModifiedDate = System.DateTime.Now;
                     selectedUser.BirthDate = Convert.ToDateTime(userViewModel.BirthDate);
-                    context.SaveChanges();
+                    _context.SaveChanges();
                 }
            }
         }
         public void DeleteUserById(int userId)
         {
-            using (var context = new BookLibraryEF())
+            using (_context)
             {
-                var selectedUser = context.User.SingleOrDefault(m => m.UserId == userId);
+                var selectedUser = _context.User.SingleOrDefault(m => m.UserId == userId);
                 selectedUser.IsActive = false;
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
         public DetailsViewModel  GetDetailsByUserId(int userId)
         {
-            using (var context = new BookLibraryEF())
+            using (_context)
             {
-                var userDetails = context.User
+                var userDetails = _context.User
                     .Where(m => m.UserId == userId)
                     .Select(x => new
                     {
@@ -122,7 +122,7 @@ namespace WebModelServices.UserModel.contracts.DTO
                         BirthDate = x.BirthDate,
                     }).FirstOrDefault();
 
-                var userBorrows = context.Borrows
+                var userBorrows = _context.Borrows
                     .Where(m => m.UserId == userId)
                     .Select(m => new
                     {

@@ -11,9 +11,9 @@ namespace WebModelServices.ReportsModel.NewFolder1
     public class ReportService : IReportService
     {
         private BookLibraryEF _context;
-        public ReportService()
+        public ReportService(BookLibraryEF context)
         {
-            _context = new BookLibraryEF();
+            _context = context;
         }
         public IList<UserWithFilterViewModel> GetUserByFilterCriteria()
         {
@@ -48,22 +48,22 @@ namespace WebModelServices.ReportsModel.NewFolder1
                              }).ToList();
             return books;
         }
-        public IList<DictGenreModel> GetDictGenre()
+        public IList<DictGenreViewModel> GetDictGenre()
         {
             var dictGenres = (from dictGenre in _context.DictBookGenre
-                              select new DictGenreModel
+                              select new DictGenreViewModel
                               {
                                   Name = dictGenre.Name,
                                   BookGenreId = dictGenre.BookGenreId
                               }).ToList();
             return dictGenres;
         }
-        public IList<BookTitleModel> GetTitle(string title)
+        public IList<BookTitleViewModel> GetTitle(string title)
         {
 
             var bookTitle = (from book in _context.Books
                              where (book.Title).Contains(title)
-                             select new BookTitleModel
+                             select new BookTitleViewModel
                              {
                                  BookId = book.BookId,
                                  Title = book.Title

@@ -27,9 +27,9 @@ namespace WebModelServices.BorrowModel
                 _selectedBooks = value;
             }
         }
-        public BorrowService()
+        public BorrowService(BookLibraryEF context)
         {
-            _context = new BookLibraryEF();
+            _context = context;
 
         }
         public BorrowsViewModel GetBorrowListViewModel()

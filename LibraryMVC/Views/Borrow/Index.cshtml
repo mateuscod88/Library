@@ -76,7 +76,6 @@
 <script type="text/javascript">
     function showUserBorrowsView(e)
     {
-        debugger;
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         var userId = dataItem.UserId;
         var url = '@Url.Action("ReturnBooksByUserViewModel", "Borrow")' + "/" + userId;
@@ -84,7 +83,6 @@
     }
     function returnBook(e)
     {
-        debugger;
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         var borrowId = dataItem.BorrowId;
         var url = '@Url.Action("ReturnBook", "Borrow")' + "/" + borrowId;
@@ -124,7 +122,6 @@
             var title = dd.text();
             allBooks.push({  "BookId": bookId,"Title":title});
         }
-        debugger;
         var userDropDown = $("#UserId").data("kendoDropDownList");
         var user = { "UserId" : userDropDown.value() ,"Name" : userDropDown.text()};
 
@@ -133,14 +130,11 @@
     }
     $(document).on("click",("#borrow-btn"),function borrowBooks()
     {
-        debugger;
         var dd1 = $("#dropdownlist1").data("kendoDropDownList");
-        //var formData = getAllToSave();
         var formData = getAllToSave();
         $.post('@Url.Action("AddBorrowsToUser","Borrow")', formData, function (data, status) {
             
         }).done(function () {
-            debugger;
             upateAndRefreshGrid("#gridBooks");
             upateAndRefreshGrid("#gridUsers");
             var wnd = $("#AddNewBorrow").data("kendoWindow").close()
@@ -165,7 +159,6 @@
         var dropDownToRemove = $(lastDD).data("kendoDropDownList");
         var book = { Title: dropDownToRemove.text(), BookId: dropDownToRemove.value() };
         dropDownToRemove.wrapper.hide();
-        debugger;
         unmarkSelectedBook(book);
         addToAllDD(book, lastDD);
         var nextLastDD = lastDropDown();
@@ -239,7 +232,6 @@
     }
     function deleteObjectFromDropDown(bookToRemoveId,dropDownId)
     {
-        debugger;
         var values = [];
         var selectedDataSource = $(dropDownId).data("kendoDropDownList").dataSource;
         var len = selectedDataSource._data.length;

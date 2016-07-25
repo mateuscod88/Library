@@ -1,4 +1,4 @@
-﻿@model IList<WebModelServices.ReportsModel.ViewModel.UserWithFilterViewModel>
+﻿
 
 @(Html.Kendo().Grid<WebModelServices.ReportsModel.ViewModel.UserWithFilterViewModel>()
         .Name("UserWithFilterGrid")
@@ -6,7 +6,7 @@
         {
             columns.Bound(c => c.FirstName).Filterable(false)
               .Width(240);
-            columns.Bound(c => c.LastName).Filterable(filterable => filterable.UI("LastNameFilter"));
+            columns.Bound(c => c.LastName).Filterable(true);
             columns.Bound(c => c.BorrowedBook).Width(240).Filterable(false);
 
         })
@@ -25,4 +25,3 @@
             .ButtonCount(10))
 
 )
-<h4>partial</h4>

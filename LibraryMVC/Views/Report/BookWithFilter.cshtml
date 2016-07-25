@@ -8,22 +8,14 @@
               .Width(240);
             columns.Bound(c => c.Title).Filterable(false);
             columns.Bound(c => c.BorrowCount).Width(240).Filterable(false);
-            columns.Bound(c => c.AddDate).Width(240).Filterable(false).Format("{0: yyyy-MM-dd HH:mm:ss}");
+            columns.Bound(c => c.AddDate).Width(240).Filterable(false).Template(x => x.AddDateDisplay);
 
         })
         .HtmlAttributes(new { style = "height: 500px;" })
         .DataSource(dataSource => dataSource
         .Custom()
-        .Batch(true)
-        .Schema(schema => schema
         
-            .Model(model => {
-                model.Id("BookId");
-                model.Field("Title", typeof(string));
-                model.Field("Author", typeof(string));
-                model.Field("BorrowCount", typeof(int));
-                model.Field("AddDate", typeof(DateTime));
-        })))
+        )
         .Scrollable()
         .Groupable()
         .Sortable()

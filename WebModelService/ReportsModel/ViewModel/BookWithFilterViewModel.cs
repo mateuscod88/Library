@@ -17,6 +17,13 @@ namespace WebModelServices.ReportsModel.ViewModel
         public string Title { get; set; }
 
         public DateTime AddDate { get; set; }
+        public string AddDateDisplay
+        {
+            get
+            {
+                return this.AddDate.ToShortDateString();
+            }
+        }
 
         public int BorrowCount { get; set; }
     }

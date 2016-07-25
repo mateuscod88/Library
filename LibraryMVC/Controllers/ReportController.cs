@@ -19,6 +19,7 @@ namespace LibraryMVC.Controllers
         {
             _reportService = reportService;
         }
+        [HttpGet]
         public ActionResult Index()
         {
             return View("Index");
@@ -35,24 +36,14 @@ namespace LibraryMVC.Controllers
             var users = _reportService.GetUserByFilterCriteria();
             return Json(users.ToDataSourceResult(request));
         }
-        [HttpGet]
-        public JsonResult FilterLastName()
-        {
-            var LastName = "Zdzisiek";
-            return Json(LastName, JsonRequestBehavior.AllowGet);
-        }
+       
         [HttpGet]
         public PartialViewResult BookWithFilter()
         {
 
             return PartialView("BookWithFilter",_reportService.GetBooks());
         }
-        [HttpPost]
-        public JsonResult GetBooks([DataSourceRequest]DataSourceRequest request)
-        {
-            var books = _reportService.GetBooks();
-            return Json(books.ToDataSourceResult(request));
-        }
+       
         [HttpGet]
         public JsonResult GetBooks()
         {
@@ -66,7 +57,7 @@ namespace LibraryMVC.Controllers
             return Json(_reportService.GetDictGenre(), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GetTitle(BookTitleModel bookTitleModel)
+        public JsonResult GetTitle(BookTitleViewModel bookTitleModel)
        {
             
             return Json(_reportService.GetTitle(bookTitleModel.Title), JsonRequestBehavior.AllowGet);
@@ -77,6 +68,7 @@ namespace LibraryMVC.Controllers
             
             return Json(_reportService.GetBooksByFilterCriteria(filterDataModel), JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
         public JsonResult ResetFilterBooks()
         {
             return Json(_reportService.GetBooks(), JsonRequestBehavior.AllowGet);

@@ -11,8 +11,8 @@ namespace WebModelServices.ReportsModel
     {
         IList<UserWithFilterViewModel> GetUserByFilterCriteria();
         IList<BookWithFilterViewModel> GetBooks();
-        IList<BookTitleModel> GetTitle(string title);
-        IList<DictGenreModel> GetDictGenre();
+        IList<BookTitleViewModel> GetTitle(string title);
+        IList<DictGenreViewModel> GetDictGenre();
         IList<BookWithFilterViewModel> GetBooksByFilterCriteria(FilterDataModel filterDataModel);
     }
 }

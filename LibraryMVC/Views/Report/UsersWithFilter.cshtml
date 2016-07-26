@@ -16,7 +16,13 @@
             .Read(read => read.Action("FilterUserss", "Report"))
             .PageSize(20))
         .Scrollable()
-        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                       .Filterable(filterable => filterable
+                       .Extra(false)
+                       .Operators(operators => operators
+                       .ForString(str => str.Clear()
+                       .StartsWith("Starts with")
+                       .Contains("Contain")
+                       )))
         .Groupable()
         .Sortable()
         .Pageable(pageable => pageable

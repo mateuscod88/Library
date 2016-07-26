@@ -48,6 +48,23 @@ namespace WebModelServices.ReportsModel.NewFolder1
                              }).ToList();
             return books;
         }
+        
+
+        public IQueryable<BookWithFilterViewModel> SortBooks()
+        {
+            var books = (from book in _context.Books
+                         //orderby book.Borrow.Count descending
+                         select new BookWithFilterViewModel
+                         {
+                             BookId = book.BookId,
+                             Author = book.Author,
+                             Title = book.Title,
+                             BorrowCount = book.Borrow.Count,
+                             AddDate = book.AddDate
+
+                         });
+            return books;
+        }
         public IList<DictGenreViewModel> GetDictGenre()
         {
             var dictGenres = (from dictGenre in _context.DictBookGenre
@@ -70,26 +87,28 @@ namespace WebModelServices.ReportsModel.NewFolder1
                              }).ToList();
             return bookTitle;
         }
-        public IList<BookWithFilterViewModel> GetBooksByFilterCriteria(FilterDataModel filterDataModel)
+        public IQueryable<BookWithFilterViewModel> GetBooksByFilterCriteria(string title, int? genreId, string borrowFrom, string borrowTo)
         {
 
             var tempBook = (from book in _context.Books select book);
 
-            if (!string.IsNullOrEmpty(filterDataModel.Title))
+            if (!string.IsNullOrEmpty(title))
             {
-                tempBook = (from book in tempBook where filterDataModel.Title == book.Title select book);
+                tempBook = (from book in tempBook where book.Title.Contains(title) select book);
             }
-            if((filterDataModel.GenreId).HasValue)
+            if((genreId).HasValue)
             {
-                tempBook = (from book in tempBook where filterDataModel.GenreId == book.DictBookGenre.BookGenreId select book);
+                tempBook = (from book in tempBook where genreId == book.DictBookGenre.BookGenreId select book);
             }
-            if(filterDataModel.BorrowFrom.HasValue)
+            if(!string.IsNullOrEmpty(borrowFrom))
             {
-                tempBook = (from book in tempBook where filterDataModel.BorrowFrom < book.AddDate select book);
+                var BorrowFrom = DateTime.Parse(borrowFrom);
+                tempBook = (from book in tempBook where BorrowFrom < book.AddDate select book);
             }
-            if(filterDataModel.BorrowTo.HasValue)
+            if(!string.IsNullOrEmpty(borrowTo))
             {
-                tempBook = (from book in tempBook where filterDataModel.BorrowTo > book.AddDate select book);
+                var BorrowTo = DateTime.Parse(borrowTo);
+                tempBook = (from book in tempBook where BorrowTo > book.AddDate select book);
             }
 
             var filteredBook = (from book in tempBook
@@ -101,7 +120,7 @@ namespace WebModelServices.ReportsModel.NewFolder1
                                     Title = book.Title,
                                     BorrowCount = book.Borrow.Count,
                                     AddDate = book.AddDate
-                                }).ToList();
+                                });
             return filteredBook;
         }
     }

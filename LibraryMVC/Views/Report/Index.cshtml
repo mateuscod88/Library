@@ -13,45 +13,74 @@
     $(document).ready(
         function()
         {
+            debugger;
+            urll = '@Url.Action("SortBooks","Report")';
+            var dS = $("#BookWithFilterGrid").data("kendoGrid");
+            var test = dS.dataSource;
+
             $("#DictGenre").data("kendoDropDownList").value("");
             $("#dataFromDatePicker").data("kendoDatePicker").value("");
             $("#dataToDatePicker").data("kendoDatePicker").value("");
+            //dS.setDataSource(new kendo.data.DataSource(
+            //    {
+            //        serverPaging: true,
+            //        serverFiltering: true,
+            //        serverSorting: true,
+            //        pageSize:10,
+            //        transport: {
+            //            read:
+            //                {
+            //                    type:"POST",
+            //                    dataType:"jsonp",
+            //                    url: urll,
+            //                    data: dataToRet
+                                
+            //                },
+            //            contentType: "application/json",
+                        
+            //        }
+            //    }));
+            
         })
-    $(document).on("click", ("#flt-btn"), function () {
-        var url = '@Url.Action("FilterBooks", "Report")';
-        var GenreId = $("#DictGenre").data("kendoDropDownList").value();
-        var Title = $("#Title").val();
-       
-        var dataPicker = $("#dataFromDatePicker").data("kendoDatePicker").value();
-        var BorrowFrom = kendo.toString(dataPicker, "MM-dd-yyyy h:mm:ss tt");
 
-        var dataPicker1 = $("#dataToDatePicker").data("kendoDatePicker").value();
-        var BorrowTo = kendo.toString(dataPicker1, "MM-dd-yyyy h:mm:ss tt");
-        var FilterData = {
-            "GenreId": GenreId,
-            "Title": Title,
-            "BorrowFrom": BorrowFrom,
-            "BorrowTo": BorrowTo
-        };
-        $.post(url, FilterData, function (data) {
-            var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
-            $.each(data, function (index) {
-                data[index].AddDate = new Date(parseInt(data[index].AddDate.substr(6)));
-            });
-            bookGrid.dataSource.data(data);
-            bookGrid.refresh();
-        })
+    function dataToRet() {
+        debugger;
+        var Title = $("#Title").val();
+        var isUndef = $("#DictGenre").data("kendoDropDownList"); 
+        if( isUndef != undefined )
+        {
+            var GenreId = $("#DictGenre").data("kendoDropDownList").value();
+            var BorrowFrom = kendo.toString($("#dataFromDatePicker").data("kendoDatePicker").value(), "MM-dd-yyyy h:mm:ss tt");
+            var BorrowTo = kendo.toString($("#dataToDatePicker").data("kendoDatePicker").value(), "MM-dd-yyyy h:mm:ss tt");
+        }
+        else {
+            var GenreId = -1;
+            var BorrowFrom = "";
+            var BorrowTo = "";
+        }
+       
+        return {
+            title: Title,
+            genreId: GenreId,
+            borrowFrom: BorrowFrom,
+            borrowTo: BorrowTo
+                      
+        }
+    }
+    $(document).on("click", ("#flt-btn"), function () {
+        //var url = '@Url.Action("FilterBooks", "Report")';
+        var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
+        debugger;
+        bookGrid.dataSource.read();
+        bookGrid.refresh();
+     
     })
+   
     $(document).on("click", ("#rst-btn"), function () {
             var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
             var url = '@Url.Action("GetBooks", "Report")';
-
-            $.get(url,function (data) {
-                var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
-                bookGrid.dataSource.data(data);
-                bookGrid.refresh();
-            })
-            
+        bookGrid.dataSource.read();
+        bookGrid.refresh();
             var autoComplete = $("#Title").data("kendoAutoComplete");
             $("#dataFromDatePicker").data("kendoDatePicker").value("");
             $("#dataToDatePicker").data("kendoDatePicker").value("");

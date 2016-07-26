@@ -1,27 +1,37 @@
 ﻿@model IList<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>
 
-@(Html.Kendo().Grid(Model)
+@(Html.Kendo().Grid<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>()
         .Name("BookWithFilterGrid")
         .Columns(columns =>
         {
             columns.Bound(c => c.Author).Filterable(false)
-              .Width(240);
+            .Width(240);
             columns.Bound(c => c.Title).Filterable(false);
             columns.Bound(c => c.BorrowCount).Width(240).Filterable(false);
-            columns.Bound(c => c.AddDate).Width(240).Filterable(false).Template(x => x.AddDateDisplay);
+            columns.Bound(c => c.AddDate).Width(240).Filterable(false).ClientTemplate("#: AddDateDisplay #");
 
         })
-        .HtmlAttributes(new { style = "height: 500px;" })
         .DataSource(dataSource => dataSource
-        .Custom()
-        
+            .Ajax()
+
+            .Model(model=> {
+                model.Id(product => product.BookId);
+                model.Field(product => product.Author);
+                model.Field(product => product.Title);
+                model.Field(product => product.BorrowCount);
+                model.Field(product=> product.AddDate);
+                model.Field(product => product.AddDateDisplay);
+                
+            })
+            .Read(read => read.Action("SortBooks", "Report")
+            .Data("dataToRet")
+            )
+
+            .PageSize(10)
         )
-        .Scrollable()
+       .Scrollable()
         .Groupable()
         .Sortable()
-        .Pageable(pageable => pageable
-            .Refresh(true)
-            .PageSizes(true)
-            .ButtonCount(10))
+        .Pageable()
 
 )

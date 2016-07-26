@@ -40,8 +40,8 @@ namespace LibraryMVC.Controllers
         [HttpGet]
         public PartialViewResult BookWithFilter()
         {
-
-            return PartialView("BookWithFilter",_reportService.GetBooks());
+            
+            return PartialView("BookWithFilter");
         }
        
         [HttpGet]
@@ -63,10 +63,31 @@ namespace LibraryMVC.Controllers
             return Json(_reportService.GetTitle(bookTitleModel.Title), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult FilterBooks(FilterDataModel filterDataModel)
+        public JsonResult SortBooks([DataSourceRequest]DataSourceRequest request, string title , int? genreId,string borrowFrom , string borrowTo)
         {
+            IQueryable<BookWithFilterViewModel> sortedBooks;
             
-            return Json(_reportService.GetBooksByFilterCriteria(filterDataModel), JsonRequestBehavior.AllowGet);
+
+            if (genreId.HasValue && genreId>-1)
+            {
+               
+                sortedBooks = _reportService.GetBooksByFilterCriteria(title,genreId,borrowFrom,borrowTo);
+
+            }
+            else
+            {
+                sortedBooks = _reportService.SortBooks();
+            }
+            
+            var s = sortedBooks.ToDataSourceResult(request);
+            return Json(s,JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult FilterBooks()
+        {
+
+
+            return Json(_reportService.GetBooks(), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
         public JsonResult ResetFilterBooks()

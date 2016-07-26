@@ -13,6 +13,7 @@ namespace WebModelServices.ReportsModel
         IList<BookWithFilterViewModel> GetBooks();
         IList<BookTitleViewModel> GetTitle(string title);
         IList<DictGenreViewModel> GetDictGenre();
-        IList<BookWithFilterViewModel> GetBooksByFilterCriteria(FilterDataModel filterDataModel);
+        IQueryable<BookWithFilterViewModel> GetBooksByFilterCriteria(string title, int? genreId, string borrowFrom, string borrowTo);
+        IQueryable<BookWithFilterViewModel> SortBooks();
     }
 }

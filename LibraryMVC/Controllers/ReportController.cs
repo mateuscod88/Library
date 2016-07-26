@@ -68,7 +68,7 @@ namespace LibraryMVC.Controllers
             IQueryable<BookWithFilterViewModel> sortedBooks;
             
 
-            if (genreId.HasValue && genreId>-1)
+            if (genreId.HasValue && genreId>-1 || !string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(borrowFrom)|| !string.IsNullOrEmpty(borrowTo))
             {
                
                 sortedBooks = _reportService.GetBooksByFilterCriteria(title,genreId,borrowFrom,borrowTo);

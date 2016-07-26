@@ -21,25 +21,7 @@
             $("#DictGenre").data("kendoDropDownList").value("");
             $("#dataFromDatePicker").data("kendoDatePicker").value("");
             $("#dataToDatePicker").data("kendoDatePicker").value("");
-            //dS.setDataSource(new kendo.data.DataSource(
-            //    {
-            //        serverPaging: true,
-            //        serverFiltering: true,
-            //        serverSorting: true,
-            //        pageSize:10,
-            //        transport: {
-            //            read:
-            //                {
-            //                    type:"POST",
-            //                    dataType:"jsonp",
-            //                    url: urll,
-            //                    data: dataToRet
-                                
-            //                },
-            //            contentType: "application/json",
-                        
-            //        }
-            //    }));
+           
             
         })
 
@@ -79,6 +61,10 @@
     $(document).on("click", ("#rst-btn"), function () {
             var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
             var url = '@Url.Action("GetBooks", "Report")';
+        var autoComplete = $("#Title").data("kendoAutoComplete");
+        $("#dataFromDatePicker").data("kendoDatePicker").value("");
+        $("#dataToDatePicker").data("kendoDatePicker").value("");
+        $("#DictGenre").data("kendoDropDownList").value("");
         bookGrid.dataSource.read();
         bookGrid.refresh();
             var autoComplete = $("#Title").data("kendoAutoComplete");

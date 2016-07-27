@@ -4,11 +4,9 @@
         .Name("UserWithFilterGrid")
         .Columns(columns =>
         {
-            columns.Bound(c => c.FirstName).Filterable(false)
-              .Width(240);
+            columns.Bound(c => c.FirstName).Filterable(false).Width(240);
             columns.Bound(c => c.LastName).Filterable(true);
             columns.Bound(c => c.BorrowedBook).Width(240).Filterable(false);
-
         })
         .HtmlAttributes(new { style = "height: 500px;" })
         .DataSource(dataSource => dataSource
@@ -16,13 +14,13 @@
             .Read(read => read.Action("FilterUserss", "Report"))
             .PageSize(20))
         .Scrollable()
-                       .Filterable(filterable => filterable
-                       .Extra(false)
-                       .Operators(operators => operators
-                       .ForString(str => str.Clear()
-                       .StartsWith("Starts with")
-                       .Contains("Contain")
-                       )))
+        .Filterable(filterable => filterable
+            .Extra(false)
+            .Operators(operators => operators
+            .ForString(str => str.Clear()
+            .StartsWith("Starts with")
+            .Contains("Contain")
+        )))
         .Groupable()
         .Sortable()
         .Pageable(pageable => pageable

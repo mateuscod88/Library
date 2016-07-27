@@ -27,7 +27,6 @@ namespace LibraryMVC.Controllers
         [HttpGet]
         public PartialViewResult UserWithFilter()
         {
-            
             return PartialView("UsersWithFilter");
         }
         [HttpPost]
@@ -36,11 +35,9 @@ namespace LibraryMVC.Controllers
             var users = _reportService.GetUserByFilterCriteria();
             return Json(users.ToDataSourceResult(request));
         }
-       
         [HttpGet]
         public PartialViewResult BookWithFilter()
         {
-            
             return PartialView("BookWithFilter");
         }
        
@@ -79,21 +76,9 @@ namespace LibraryMVC.Controllers
                 sortedBooks = _reportService.SortBooks();
             }
             
-            var s = sortedBooks.ToDataSourceResult(request);
-            return Json(s,JsonRequestBehavior.AllowGet);
+             
+            return Json(sortedBooks.ToDataSourceResult(request),JsonRequestBehavior.AllowGet);
         }
-        [HttpPost]
-        public JsonResult FilterBooks()
-        {
-
-
-            return Json(_reportService.GetBooks(), JsonRequestBehavior.AllowGet);
-        }
-        [HttpGet]
-        public JsonResult ResetFilterBooks()
-        {
-            return Json(_reportService.GetBooks(), JsonRequestBehavior.AllowGet);
-
-        }
+     
     }
 }

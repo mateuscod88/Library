@@ -13,20 +13,12 @@
     $(document).ready(
         function()
         {
-            debugger;
-            urll = '@Url.Action("SortBooks","Report")';
-            var dS = $("#BookWithFilterGrid").data("kendoGrid");
-            var test = dS.dataSource;
-
             $("#DictGenre").data("kendoDropDownList").value("");
             $("#dataFromDatePicker").data("kendoDatePicker").value("");
             $("#dataToDatePicker").data("kendoDatePicker").value("");
-           
-            
         })
 
     function dataToRet() {
-        debugger;
         var Title = $("#Title").val();
         var isUndef = $("#DictGenre").data("kendoDropDownList"); 
         if( isUndef != undefined )
@@ -40,45 +32,30 @@
             var BorrowFrom = "";
             var BorrowTo = "";
         }
-       
         return {
             title: Title,
             genreId: GenreId,
             borrowFrom: BorrowFrom,
             borrowTo: BorrowTo
-                      
         }
     }
     $(document).on("click", ("#flt-btn"), function () {
-        //var url = '@Url.Action("FilterBooks", "Report")';
         var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
-        debugger;
         bookGrid.dataSource.read();
         bookGrid.refresh();
-     
     })
-   
     $(document).on("click", ("#rst-btn"), function () {
             var bookGrid = $("#BookWithFilterGrid").data("kendoGrid");
-            var url = '@Url.Action("GetBooks", "Report")';
-        var autoComplete = $("#Title").data("kendoAutoComplete");
-        $("#dataFromDatePicker").data("kendoDatePicker").value("");
-        $("#dataToDatePicker").data("kendoDatePicker").value("");
-        $("#DictGenre").data("kendoDropDownList").value("");
-        bookGrid.dataSource.read();
-        bookGrid.refresh();
             var autoComplete = $("#Title").data("kendoAutoComplete");
             $("#dataFromDatePicker").data("kendoDatePicker").value("");
             $("#dataToDatePicker").data("kendoDatePicker").value("");
             $("#DictGenre").data("kendoDropDownList").value("");
             autoComplete.value("");
-
-        
+            bookGrid.dataSource.read();
+            bookGrid.refresh();
     })
     function onAdditionalData() {
         var newTitle = { "Title": $("#Title").val() }
         return newTitle;
         };
-    
-    
 </script>

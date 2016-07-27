@@ -20,7 +20,6 @@ namespace WebModelServices.ReportsModel.NewFolder1
             using (_context)
             {
                 var users = (from user in _context.User
-                             orderby user.Borrow.Count descending
                              select new UserWithFilterViewModel
                              {
                                  FirstName = user.FirstName,
@@ -28,7 +27,7 @@ namespace WebModelServices.ReportsModel.NewFolder1
                                  UserId = user.UserId,
                                  BorrowedBook = user.Borrow.Count
                                 
-                             }).ToList();
+                             }).OrderByDescending(x=>x.BorrowedBook).ToList();
                 return users;
 
             }
@@ -36,7 +35,6 @@ namespace WebModelServices.ReportsModel.NewFolder1
         public IList<BookWithFilterViewModel> GetBooks()
         {
             var books = (from book in _context.Books
-                         orderby book.Borrow.Count descending
                          select new BookWithFilterViewModel
                          {
                              BookId = book.BookId,
@@ -45,7 +43,7 @@ namespace WebModelServices.ReportsModel.NewFolder1
                              BorrowCount = book.Borrow.Count,
                              AddDate = book.AddDate
                              
-                             }).ToList();
+                             }).OrderByDescending(x=>x.BorrowCount).ToList();
             return books;
         }
         
@@ -53,7 +51,6 @@ namespace WebModelServices.ReportsModel.NewFolder1
         public IQueryable<BookWithFilterViewModel> SortBooks()
         {
             var books = (from book in _context.Books
-                         //orderby book.Borrow.Count descending
                          select new BookWithFilterViewModel
                          {
                              BookId = book.BookId,
@@ -62,7 +59,7 @@ namespace WebModelServices.ReportsModel.NewFolder1
                              BorrowCount = book.Borrow.Count,
                              AddDate = book.AddDate
 
-                         });
+                         }).OrderByDescending(x=>x.BorrowCount);
             return books;
         }
         public IList<DictGenreViewModel> GetDictGenre()

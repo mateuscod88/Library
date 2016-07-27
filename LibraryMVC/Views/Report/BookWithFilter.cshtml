@@ -1,6 +1,6 @@
 ﻿@model IList<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>
 
-@(Html.Kendo().Grid<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>()
+@(Html.Kendo().Grid<WebModelServices.ReportsModel.ViewModel.BookWithFilterViewModel>(Model)
         .Name("BookWithFilterGrid")
         .Columns(columns =>
         {

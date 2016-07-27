@@ -38,7 +38,8 @@ namespace LibraryMVC.Controllers
         [HttpGet]
         public PartialViewResult BookWithFilter()
         {
-            return PartialView("BookWithFilter");
+            var books = _reportService.GetBooks();
+            return PartialView("BookWithFilter",books);
         }
        
         [HttpGet]
